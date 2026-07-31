@@ -1,0 +1,13 @@
+entity.question.field_ui_base:
+  path: '/admin/structure/question'
+  defaults:
+    _title: 'Question settings'
+  requirements:
+    _permission: 'administer question fields'
+
+entity.answer.field_ui_base:
+  path: '/admin/structure/answer'
+  defaults:
+    _title: 'Answer settings'
+  requirements:
+    _permission: 'administer answer fields'

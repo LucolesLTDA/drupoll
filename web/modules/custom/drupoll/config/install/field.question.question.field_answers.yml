@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.question.field_answers
+    - entity.bundle.question.question
+  module:
+    - drupal_voting
+id: question.question.field_answers
+field_name: field_answers
+entity_type: question
+bundle: question
+label: 'Answers'
+description: 'Select existing answers or create new ones for this question.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:answer'
+  handler_settings:
+    target_bundles: null
+field_type: entity_reference

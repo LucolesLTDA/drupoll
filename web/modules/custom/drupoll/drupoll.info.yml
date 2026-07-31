@@ -1,0 +1,11 @@
+name: 'Drupoll'
+type: module
+description: 'Provides a voting system with Question, Answer, and Vote entities.'
+package: Custom
+core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:media
+  - drupal:field
+  - drupal:text
+  - drupal:options
+  - inline_entity_form:inline_entity_form

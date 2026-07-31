@@ -1,0 +1,48 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.question.question.field_answers
+    - field.field.question.question.field_description
+    - field.field.question.question.field_image
+    - field.field.question.question.field_title
+    - entity.bundle.question.question
+  module:
+    - media
+    - user
+id: question.question.default
+targetEntityType: question
+bundle: question
+mode: default
+content:
+  field_title:
+    type: string
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      link_to_entity: false
+  field_image:
+    type: entity_reference_entity_view
+    label: hidden
+    weight: 1
+    region: content
+    settings:
+      view_mode: thumbnail
+  field_description:
+    type: text_default
+    label: hidden
+    weight: 2
+    region: content
+  field_answers:
+    type: entity_reference_label
+    label: above
+    weight: 3
+    region: content
+    settings:
+      link: false
+hidden:
+  voting_closed: true
+  show_vote_count: true
+  uid: true
+  status: true

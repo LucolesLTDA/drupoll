@@ -1,0 +1,95 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks for the Drupoll module.
+ */
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\drupoll\Entity\QuestionInterface;
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Restricts the inline entity form widget on the Question form according
+ * to granular assign/create permissions rather than IEF's own defaults.
+ */
+function drupoll_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (!in_array($form_id, ['question_add_form', 'question_edit_form'], TRUE)) {
+    return;
+  }
+
+  $account = \Drupal::currentUser();
+  $entity = $form_state->getFormObject()->getEntity();
+
+  /** @var \Drupal\drupoll\Entity\QuestionInterface $entity */
+  $is_owner = $entity->isNew() || $entity->getOwnerId() == $account->id();
+
+  $can_assign = $account->hasPermission('assign answers to any question')
+    || ($is_owner && $account->hasPermission('assign answers to own questions'));
+
+  $can_create = $account->hasPermission('create answers');
+
+  if (isset($form['field_answers']['widget'])) {
+    $widget = &$form['field_answers']['widget'];
+    $widget['#allow_existing'] = $can_assign;
+    $widget['#allow_new'] = $can_create;
+
+    if (!$can_assign && !$can_create) {
+      $widget['#disabled'] = TRUE;
+      $widget['#description'] = t('You do not have permission to assign or create answers.');
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave() for question entities.
+ *
+ * Auto-generates a revision log message summarizing field changes.
+ */
+function drupoll_question_presave(QuestionInterface $entity) {
+  _drupoll_generate_revision_log($entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave() for answer entities.
+ */
+function drupoll_answer_presave(\Drupal\drupoll\Entity\AnswerInterface $entity) {
+  _drupoll_generate_revision_log($entity);
+}
+
+/**
+ * Generates a diff-based revision log message for revisionable entities.
+ */
+function _drupoll_generate_revision_log($entity) {
+  if ($entity->isNew() || !$entity->getEntityType()->isRevisionable()) {
+    return;
+  }
+
+  $storage = \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId());
+  $original = $storage->loadUnchanged($entity->id());
+
+  if (!$original) {
+    return;
+  }
+
+  $changed_fields = [];
+  foreach ($entity->getFieldDefinitions() as $field_name => $definition) {
+    if ($definition->isComputed()) {
+      continue;
+    }
+    if ($entity->get($field_name)->getValue() != $original->get($field_name)->getValue()) {
+      $changed_fields[] = $definition->getLabel();
+    }
+  }
+
+  if (!empty($changed_fields)) {
+    $entity->setNewRevision(TRUE);
+    $entity->setRevisionLogMessage(
+      t('Updated: @fields', ['@fields' => implode(', ', $changed_fields)])
+    );
+    $entity->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+    $entity->setRevisionUserId(\Drupal::currentUser()->id());
+  }
+}

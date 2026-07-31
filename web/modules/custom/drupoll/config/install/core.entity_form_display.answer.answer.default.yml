@@ -1,0 +1,54 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.answer.answer.field_description
+    - field.field.answer.answer.field_image
+    - field.field.answer.answer.field_title
+    - entity.bundle.answer.answer
+  module:
+    - ckeditor5
+    - inline_entity_form
+    - media_library
+    - text
+id: answer.answer.default
+targetEntityType: answer
+bundle: answer
+mode: default
+content:
+  field_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+  field_description:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 9
+      placeholder: ''
+    third_party_settings:
+      allowed_formats: []
+  field_image:
+    type: media_library_widget
+    weight: 2
+    region: content
+    settings:
+      media_types: []
+  uid:
+    type: entity_reference_autocomplete
+    weight: 6
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+  status:
+    type: boolean_checkbox
+    weight: 7
+    region: content
+hidden: {  }

@@ -1,0 +1,20 @@
+# Composer-managed dependencies.
+/vendor/
+
+# Drupal core and contrib (managed by Composer).
+/web/core/
+/web/modules/contrib/
+/web/themes/contrib/
+/web/profiles/contrib/
+/web/libraries/
+
+# Composer files (keep composer.json/lock, ignore local overrides if any).
+composer.phar
+
+# IDE/editor files.
+.idea/
+.vscode/
+
+# OS files.
+.DS_Store
+Thumbs.db

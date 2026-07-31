@@ -1,0 +1,9 @@
+administer question fields:
+  title: 'Administer question fields'
+  description: 'Add, edit, and configure fields on the Question entity.'
+  restrict access: true
+
+administer answer fields:
+  title: 'Administer answer fields'
+  description: 'Add, edit, and configure fields on the Answer entity.'
+  restrict access: true

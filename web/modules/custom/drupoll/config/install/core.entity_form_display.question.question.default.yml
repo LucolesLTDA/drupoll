@@ -1,0 +1,83 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.question.question.field_answers
+    - field.field.question.question.field_description
+    - field.field.question.question.field_image
+    - field.field.question.question.field_title
+    - entity.bundle.question.question
+  module:
+    - ckeditor5
+    - inline_entity_form
+    - media_library
+    - text
+id: question.question.default
+targetEntityType: question
+bundle: question
+mode: default
+content:
+  field_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+  field_description:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 9
+      placeholder: ''
+    third_party_settings:
+      allowed_formats: []
+  field_image:
+    type: media_library_widget
+    weight: 2
+    region: content
+    settings:
+      media_types: []
+  field_answers:
+    type: inline_entity_form_complex
+    weight: 3
+    region: content
+    settings:
+      form_mode: default
+      override_labels: true
+      label_singular: 'answer'
+      label_plural: 'answers'
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+      allow_duplicate: false
+      collapsible: false
+      collapsed: false
+      revision: false
+  voting_closed:
+    type: boolean_checkbox
+    weight: 4
+    region: content
+    settings:
+      display_label: true
+  show_vote_count:
+    type: boolean_checkbox
+    weight: 5
+    region: content
+    settings:
+      display_label: true
+  uid:
+    type: entity_reference_autocomplete
+    weight: 6
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+  status:
+    type: boolean_checkbox
+    weight: 7
+    region: content
+hidden: {  }
