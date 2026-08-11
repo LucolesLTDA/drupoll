@@ -1,0 +1,23 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a Drupoll answer.
+ *
+ * Available variables:
+ * - answer: The answer entity.
+ * - title: The answer's label.
+ * - url: The answer's canonical URL.
+ * - content: Rendered fields, keyed by field name.
+ *
+ * @ingroup themeable
+ */
+#}
+<article{{ attributes }}>
+  <h2><a href="{{ url }}">{{ title }}</a></h2>
+
+  {% if content %}
+    <div class="drupoll-answer__fields">
+      {{ content }}
+    </div>
+  {% endif %}
+</article>

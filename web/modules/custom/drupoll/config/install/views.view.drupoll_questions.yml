@@ -1,0 +1,178 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - drupoll
+    - user
+id: drupoll_questions
+label: 'Drupoll questions'
+module: views
+description: 'Administrative listing of all Drupoll questions.'
+tag: ''
+base_table: drupoll_questions
+base_field: quid
+display:
+  default:
+    id: default
+    display_title: Default
+    display_plugin: default
+    position: 0
+    display_options:
+      title: Questions
+      fields:
+        quid:
+          id: quid
+          table: drupoll_questions
+          field: quid
+          entity_type: drupoll_question
+          entity_field: quid
+          plugin_id: field
+          label: ID
+        title:
+          id: title
+          table: drupoll_questions
+          field: title
+          entity_type: drupoll_question
+          entity_field: title
+          plugin_id: field
+          label: Title
+          settings:
+            link_to_entity: true
+        uid:
+          id: uid
+          table: drupoll_questions
+          field: uid
+          entity_type: drupoll_question
+          entity_field: uid
+          plugin_id: field
+          label: Author
+          settings:
+            link: true
+        voting_status:
+          id: voting_status
+          table: drupoll_questions
+          field: voting_status
+          entity_type: drupoll_question
+          entity_field: voting_status
+          plugin_id: field
+          label: 'Voting status'
+          type: boolean
+          settings:
+            format: 'yes-no'
+            format_custom_false: ''
+            format_custom_true: ''
+          third_party_settings: {  }
+        created:
+          id: created
+          table: drupoll_questions
+          field: created
+          entity_type: drupoll_question
+          entity_field: created
+          plugin_id: field
+          label: Created
+          settings:
+            date_format: short
+        drupoll_bulk_form:
+          id: drupoll_bulk_form
+          table: drupoll_questions
+          field: drupoll_bulk_form
+          entity_type: drupoll_question
+          plugin_id: bulk_form
+          label: 'Bulk update'
+          action_title: Action
+          include_exclude: exclude
+          selected_actions: {  }
+        operations:
+          id: operations
+          table: drupoll_questions
+          field: operations
+          entity_type: drupoll_question
+          plugin_id: entity_operations
+          label: Operations
+      pager:
+        type: mini
+        options:
+          items_per_page: 50
+          offset: 0
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: true
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+      access:
+        type: perm
+        options:
+          perm: 'create drupoll question'
+      cache:
+        type: tag
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: false
+      style:
+        type: table
+        options:
+          columns:
+            quid: quid
+            title: title
+            uid: uid
+            voting_status: voting_status
+            created: created
+            drupoll_bulk_form: drupoll_bulk_form
+            operations: operations
+          default: created
+          info:
+            quid:
+              sortable: true
+            title:
+              sortable: true
+            uid:
+              sortable: false
+            voting_status:
+              sortable: true
+            created:
+              sortable: true
+          override: true
+      row:
+        type: fields
+      filters:
+        title:
+          id: title
+          table: drupoll_questions
+          field: title
+          entity_type: drupoll_question
+          entity_field: title
+          plugin_id: string
+          operator: contains
+          value: ''
+          exposed: true
+          expose:
+            operator_id: title_op
+            label: Title
+            identifier: title
+            operator: title_op
+      sorts:
+        created:
+          id: created
+          table: drupoll_questions
+          field: created
+          entity_type: drupoll_question
+          entity_field: created
+          plugin_id: date
+          order: DESC
+      arguments: {  }
+  page_1:
+    id: page_1
+    display_title: Page
+    display_plugin: page
+    position: 1
+    display_options:
+      path: admin/content/questions
+      menu:
+        type: tab
+        title: Questions
+        weight: 0
+      display_extenders: {  }

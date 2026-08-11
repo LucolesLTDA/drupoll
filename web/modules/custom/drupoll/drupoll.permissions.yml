@@ -1,9 +1,38 @@
-administer question fields:
+create drupoll question:
+  title: 'Create questions'
+create drupoll answer:
+  title: 'Create answers'
+delete own drupoll question:
+  title: 'Delete own questions'
+delete any drupoll question:
+  title: 'Delete any question'
+delete own drupoll answer:
+  title: 'Delete own answers'
+delete any drupoll answer:
+  title: 'Delete any answer'
+delete own drupoll vote:
+  title: 'Delete own votes'
+delete any drupoll vote:
+  title: 'Delete any vote'
+administer drupoll question fields:
   title: 'Administer question fields'
-  description: 'Add, edit, and configure fields on the Question entity.'
-  restrict access: true
-
-administer answer fields:
+  description: 'Manage fields, form display, and view display for questions.'
+administer drupoll answer fields:
   title: 'Administer answer fields'
-  description: 'Add, edit, and configure fields on the Answer entity.'
-  restrict access: true
+  description: 'Manage fields, form display, and view display for answers.'
+close voting for any drupoll question:
+  title: 'Close voting for any question'
+close voting for own drupoll question:
+  title: 'Close voting for own questions'
+open voting for any drupoll question:
+  title: 'Open voting for any question'
+open voting for own drupoll question:
+  title: 'Open voting for own questions'
+view vote count for any drupoll question:
+  title: 'View vote count for any question'
+view vote count for own drupoll question:
+  title: 'View vote count for own questions'
+view own drupoll votes:
+  title: 'View own votes'
+view any drupoll vote:
+  title: 'View any vote'

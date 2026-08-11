@@ -1,13 +1,98 @@
-entity.question.field_ui_base:
-  path: '/admin/structure/question'
+entity.drupoll_question.canonical:
+  path: '/question/{drupoll_question}'
   defaults:
-    _title: 'Question settings'
+    _entity_view: 'drupoll_question.default'
+    _title_callback: '\Drupal\drupoll\Controller\DrupollQuestionController::title'
   requirements:
-    _permission: 'administer question fields'
+    _entity_access: 'drupoll_question.view'
 
-entity.answer.field_ui_base:
-  path: '/admin/structure/answer'
+entity.drupoll_question.add_form:
+  path: '/question/add'
   defaults:
-    _title: 'Answer settings'
+    _entity_form: 'drupoll_question.add'
+    _title: 'Add question'
   requirements:
-    _permission: 'administer answer fields'
+    _permission: 'create drupoll question'
+
+entity.drupoll_question.delete_form:
+  path: '/question/{drupoll_question}/delete'
+  defaults:
+    _entity_form: 'drupoll_question.delete'
+    _title: 'Delete question'
+  requirements:
+    _entity_access: 'drupoll_question.delete'
+
+entity.drupoll_question.close_form:
+  path: '/question/{drupoll_question}/close'
+  defaults:
+    _form: '\Drupal\drupoll\Form\DrupollQuestionCloseForm'
+    _title: 'Close voting'
+  requirements:
+    _custom_access: '\Drupal\drupoll\Access\DrupollQuestionToggleAccess::closeAccess'
+
+entity.drupoll_question.open_form:
+  path: '/question/{drupoll_question}/open'
+  defaults:
+    _form: '\Drupal\drupoll\Form\DrupollQuestionOpenForm'
+    _title: 'Open voting'
+  requirements:
+    _custom_access: '\Drupal\drupoll\Access\DrupollQuestionToggleAccess::openAccess'
+
+entity.drupoll_question.vote_form:
+  path: '/question/{drupoll_question}/vote'
+  defaults:
+    _form: '\Drupal\drupoll\Form\DrupollVoteForm'
+    _title: 'Vote'
+  requirements:
+    _custom_access: '\Drupal\drupoll\Access\DrupollVoteAccess::access'
+
+entity.drupoll_answer.canonical:
+  path: '/answer/{drupoll_answer}'
+  defaults:
+    _entity_view: 'drupoll_answer.default'
+    _title_callback: '\Drupal\drupoll\Controller\DrupollAnswerController::title'
+  requirements:
+    _entity_access: 'drupoll_answer.view'
+
+entity.drupoll_answer.delete_form:
+  path: '/answer/{drupoll_answer}/delete'
+  defaults:
+    _entity_form: 'drupoll_answer.delete'
+    _title: 'Delete answer'
+  requirements:
+    _entity_access: 'drupoll_answer.delete'
+
+entity.drupoll_vote.canonical:
+  path: '/vote/{drupoll_vote}'
+  defaults:
+    _entity_view: 'drupoll_vote.default'
+    _title_callback: '\Drupal\drupoll\Controller\DrupollVoteController::title'
+  requirements:
+    _entity_access: 'drupoll_vote.view'
+
+entity.drupoll_vote.delete_form:
+  path: '/vote/{drupoll_vote}/delete'
+  defaults:
+    _entity_form: 'drupoll_vote.delete'
+    _title: 'Delete vote'
+  requirements:
+    _entity_access: 'drupoll_vote.delete'
+
+drupoll.autocomplete.answers:
+  path: '/drupoll/autocomplete/answers'
+  defaults:
+    _controller: '\Drupal\drupoll\Controller\DrupollAnswerAutocompleteController::handleAutocomplete'
+  requirements:
+    _permission: 'create drupoll question'
+
+drupoll.user_votes:
+  path: '/user/{user}/votes'
+  defaults:
+    _controller: '\Drupal\drupoll\Controller\DrupollUserVotesController::page'
+    _title: 'Votes'
+  requirements:
+    _custom_access: '\Drupal\drupoll\Access\DrupollUserVotesAccess::access'
+  options:
+    parameters:
+      user:
+        type: entity:user

@@ -1,0 +1,27 @@
+drupoll.question_type.*:
+  type: config_entity
+  label: 'Question type'
+  mapping:
+    id:
+      type: string
+      label: 'Machine name'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: text
+      label: 'Description'
+
+drupoll.answer_type.*:
+  type: config_entity
+  label: 'Answer type'
+  mapping:
+    id:
+      type: string
+      label: 'Machine name'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: text
+      label: 'Description'

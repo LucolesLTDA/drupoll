@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - drupoll.answer_type.drupoll_answer
+  module:
+    - drupoll
+id: drupoll_answer.drupoll_answer.default
+targetEntityType: drupoll_answer
+bundle: drupoll_answer
+mode: default
+content: {}
+hidden:
+  title: true
+  uid: true
+  created: true
+third_party_settings: {  }

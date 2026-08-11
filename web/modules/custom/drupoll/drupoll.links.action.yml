@@ -1,0 +1,5 @@
+drupoll_question.add_action:
+  route_name: entity.drupoll_question.add_form
+  title: 'Add question'
+  appears_on:
+    - view.drupoll_questions.page_1

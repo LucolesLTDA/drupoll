@@ -1,0 +1,188 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - drupoll
+    - user
+id: drupoll_votes
+label: 'Drupoll votes'
+module: views
+description: 'Administrative listing of all Drupoll votes.'
+tag: ''
+base_table: drupoll_votes
+base_field: vtid
+display:
+  default:
+    id: default
+    display_title: Default
+    display_plugin: default
+    position: 0
+    display_options:
+      title: Votes
+      relationships:
+        quid:
+          id: quid
+          table: drupoll_votes
+          field: quid
+          entity_type: drupoll_vote
+          entity_field: quid
+          plugin_id: standard
+          label: Question
+          required: true
+        anid:
+          id: anid
+          table: drupoll_votes
+          field: anid
+          entity_type: drupoll_vote
+          entity_field: anid
+          plugin_id: standard
+          label: Answer
+          required: true
+        uid:
+          id: uid
+          table: drupoll_votes
+          field: uid
+          entity_type: drupoll_vote
+          entity_field: uid
+          plugin_id: standard
+          label: Voter
+          required: true
+      fields:
+        vtid:
+          id: vtid
+          table: drupoll_votes
+          field: vtid
+          entity_type: drupoll_vote
+          entity_field: vtid
+          plugin_id: field
+          label: ID
+        title:
+          id: title
+          table: drupoll_questions
+          field: title
+          relationship: quid
+          entity_type: drupoll_question
+          entity_field: title
+          plugin_id: field
+          label: Question
+          settings:
+            link_to_entity: true
+        title_1:
+          id: title_1
+          table: drupoll_answers
+          field: title
+          relationship: anid
+          entity_type: drupoll_answer
+          entity_field: title
+          plugin_id: field
+          label: Answer
+          settings:
+            link_to_entity: true
+        name:
+          id: name
+          table: users_field_data
+          field: name
+          relationship: uid
+          entity_type: user
+          entity_field: name
+          plugin_id: field
+          label: Voter
+          settings:
+            link_to_entity: true
+        created:
+          id: created
+          table: drupoll_votes
+          field: created
+          entity_type: drupoll_vote
+          entity_field: created
+          plugin_id: field
+          label: 'Cast on'
+          settings:
+            date_format: short
+        drupoll_bulk_form:
+          id: drupoll_bulk_form
+          table: drupoll_votes
+          field: drupoll_bulk_form
+          entity_type: drupoll_vote
+          plugin_id: bulk_form
+          label: 'Bulk update'
+          action_title: Action
+          include_exclude: exclude
+          selected_actions: {  }
+        operations:
+          id: operations
+          table: drupoll_votes
+          field: operations
+          entity_type: drupoll_vote
+          plugin_id: entity_operations
+          label: Operations
+      pager:
+        type: mini
+        options:
+          items_per_page: 50
+          offset: 0
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: true
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+      access:
+        type: drupoll_own_or_any_vote_permission
+        options: {  }
+      cache:
+        type: tag
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: false
+      style:
+        type: table
+        options:
+          columns:
+            vtid: vtid
+            title: title
+            title_1: title_1
+            name: name
+            created: created
+            drupoll_bulk_form: drupoll_bulk_form
+            operations: operations
+          default: created
+          info:
+            vtid:
+              sortable: true
+            title:
+              sortable: false
+            title_1:
+              sortable: false
+            name:
+              sortable: false
+            created:
+              sortable: true
+          override: true
+      row:
+        type: fields
+      sorts:
+        created:
+          id: created
+          table: drupoll_votes
+          field: created
+          entity_type: drupoll_vote
+          entity_field: created
+          plugin_id: date
+          order: DESC
+      arguments: {  }
+  page_1:
+    id: page_1
+    display_title: Page
+    display_plugin: page
+    position: 1
+    display_options:
+      path: admin/content/votes
+      menu:
+        type: tab
+        title: Votes
+        weight: 2
+      display_extenders: {  }

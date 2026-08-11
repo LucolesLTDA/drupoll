@@ -1,0 +1,138 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - drupoll
+    - user
+id: drupoll_user_votes
+label: 'Drupoll user votes'
+module: views
+description: 'Embedded listing of a single user''s votes, used on the account "Votes" tab.'
+tag: ''
+base_table: drupoll_votes
+base_field: vtid
+display:
+  default:
+    id: default
+    display_title: Default
+    display_plugin: default
+    position: 0
+    display_options:
+      title: 'My votes'
+      relationships:
+        quid:
+          id: quid
+          table: drupoll_votes
+          field: quid
+          entity_type: drupoll_vote
+          entity_field: quid
+          plugin_id: standard
+          label: Question
+          required: true
+        anid:
+          id: anid
+          table: drupoll_votes
+          field: anid
+          entity_type: drupoll_vote
+          entity_field: anid
+          plugin_id: standard
+          label: Answer
+          required: true
+      fields:
+        title:
+          id: title
+          table: drupoll_questions
+          field: title
+          relationship: quid
+          entity_type: drupoll_question
+          entity_field: title
+          plugin_id: field
+          label: Question
+          settings:
+            link_to_entity: true
+        title_1:
+          id: title_1
+          table: drupoll_answers
+          field: title
+          relationship: anid
+          entity_type: drupoll_answer
+          entity_field: title
+          plugin_id: field
+          label: 'Your answer'
+          settings:
+            link_to_entity: true
+        created:
+          id: created
+          table: drupoll_votes
+          field: created
+          entity_type: drupoll_vote
+          entity_field: created
+          plugin_id: field
+          label: 'Cast on'
+          settings:
+            date_format: short
+      pager:
+        type: mini
+        options:
+          items_per_page: 25
+          offset: 0
+      access:
+        type: none
+        options: {  }
+      cache:
+        type: tag
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: false
+      style:
+        type: table
+        options:
+          columns:
+            title: title
+            title_1: title_1
+            created: created
+          default: created
+          info:
+            title:
+              sortable: false
+            title_1:
+              sortable: false
+            created:
+              sortable: true
+          override: true
+      row:
+        type: fields
+      sorts:
+        created:
+          id: created
+          table: drupoll_votes
+          field: created
+          entity_type: drupoll_vote
+          entity_field: created
+          plugin_id: date
+          order: DESC
+      arguments:
+        uid:
+          id: uid
+          table: drupoll_votes
+          field: uid
+          entity_type: drupoll_vote
+          entity_field: uid
+          plugin_id: numeric
+          default_action: 'empty'
+          exception:
+            title_enable: true
+          summary:
+            format: default_summary
+          specify_validation: true
+          validate:
+            type: 'entity:user'
+  embed_1:
+    id: embed_1
+    display_title: Embed
+    display_plugin: embed
+    position: 1
+    display_options:
+      display_extenders: {  }

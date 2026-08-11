@@ -2,94 +2,311 @@
 
 /**
  * @file
- * Contains hooks for the Drupoll module.
+ * Contains hook implementations for the Drupoll module.
  */
 
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\drupoll\Entity\QuestionInterface;
+use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Render\Element;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
+use Drupal\drupoll\Entity\DrupollQuestionInterface;
+use Drupal\drupoll\Entity\DrupollVoteInterface;
+use Drupal\drupoll\Form\DrupollVoteForm;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\ViewExecutable;
 
 /**
- * Implements hook_form_alter().
- *
- * Restricts the inline entity form widget on the Question form according
- * to granular assign/create permissions rather than IEF's own defaults.
+ * Implements hook_help().
  */
-function drupoll_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if (!in_array($form_id, ['question_add_form', 'question_edit_form'], TRUE)) {
+function drupoll_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.drupoll':
+      $output = '<h2>' . t('About') . '</h2>';
+      $output .= '<p>' . t('Drupoll provides a simple polling system built on three entity types: Questions, Answers, and Votes. This page explains the most common tasks.') . '</p>';
+
+      $output .= '<h2>' . t('Creating a question') . '</h2>';
+      $output .= '<ol>';
+      $output .= '<li>' . t('Visit <em>Question > Add</em> (path /question/add). You need the "Create questions" permission.') . '</li>';
+      $output .= '<li>' . t('Enter a title for the question.') . '</li>';
+      $output .= '<li>' . t('In the answers area, either type to search for and reuse an existing answer (matching begins after a few characters and shows up to 10 suggestions), or add a brand new answer inline. A question requires at least 2 answers before it can be saved.') . '</li>';
+      $output .= '<li>' . t('Choose whether the vote count/results should be visible to eligible voters, using the "Show vote count" option.') . '</li>';
+      $output .= '<li>' . t('Save the question. Voting is open by default.') . '</li>';
+      $output .= '</ol>';
+
+      $output .= '<h2>' . t('Voting on a question') . '</h2>';
+      $output .= '<p>' . t('Only registered users may vote. Visit a question at /question/{id} and select one answer using the radio buttons, then submit. Voting happens in place, with no page reload. A user may vote only once per question; once a vote has been cast, the vote form is replaced by results (if the viewer is eligible to see them) or a simple confirmation that a vote was recorded.') . '</p>';
+
+      $output .= '<h2>' . t('Opening and closing voting') . '</h2>';
+      $output .= '<p>' . t('A question owner (with the "own" permissions) or an administrator (with the "any" permissions) can close voting at /question/{id}/close or reopen it at /question/{id}/open. Questions themselves cannot be edited after creation; only their open/closed status can change.') . '</p>';
+
+      $output .= '<h2>' . t('Viewing results') . '</h2>';
+      $output .= '<p>' . t('Whether results are visible at all is controlled per-question by the "Show vote count" setting. When enabled, a user can see results if they hold the relevant "view vote count" permission (for their own questions or for any question) and either they have already voted, or voting has since closed.') . '</p>';
+
+      $output .= '<h2>' . t('Reusing answers') . '</h2>';
+      $output .= '<p>' . t('Answers are independent entities that can be shared across multiple questions. An answer cannot be deleted while any question still references it; once every referencing question has been deleted, the answer becomes deletable on its own.') . '</p>';
+
+      $output .= '<h2>' . t('Deleting content') . '</h2>';
+      $output .= '<p>' . t('Questions, answers, and votes can each be deleted from their individual pages (/question/{id}/delete, /answer/{id}/delete, /vote/{id}/delete), subject to permissions. Deleting a question also deletes the votes cast on it, but leaves its answers intact for reuse elsewhere. Deleting a single vote allows the affected user to vote again on that question, as long as voting is still open.') . '</p>';
+
+      $output .= '<h2>' . t('Administration and reports') . '</h2>';
+      $output .= '<p>' . t('Users with sufficient permissions can review all questions, answers, and votes at <em>Content > Questions</em>, <em>Content > Answers</em>, and <em>Content > Votes</em> (/admin/content/questions, /admin/content/answers, /admin/content/votes). The Votes listing is restricted to a user\'s own votes unless they hold a permission granting visibility into any vote. Each user also has a "Votes" tab on their account page listing the votes they have cast.') . '</p>';
+
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function drupoll_theme($existing, $type, $theme, $path) {
+  return [
+    'drupoll_question' => [
+      'render element' => 'elements',
+    ],
+    'drupoll_answer' => [
+      'render element' => 'elements',
+    ],
+    'drupoll_vote' => [
+      'render element' => 'elements',
+    ],
+  ];
+}
+
+/**
+ * Determines own/any access to a permission-gated operation on a question.
+ *
+ * Several operations on Question entities (closing voting, opening voting,
+ * viewing vote counts) follow the same own/any permission pattern: a user
+ * may act if they hold the "any" variant of the permission, or if they
+ * hold the "own" variant and are also the question's owner. This helper
+ * centralizes that check so it is defined once rather than duplicated
+ * across access-control callbacks and Action plugins.
+ *
+ * @param \Drupal\drupoll\Entity\DrupollQuestionInterface $question
+ *   The question being checked.
+ * @param \Drupal\Core\Session\AccountInterface $account
+ *   The account to check access for.
+ * @param string $operation
+ *   The operation name, e.g. 'close voting', 'open voting', or
+ *   'view vote count'. Combined with ' for any drupoll question' and
+ *   ' for own drupoll question' to form the two permission machine names
+ *   checked.
+ *
+ * @return \Drupal\Core\Access\AccessResultInterface
+ *   The access result, including appropriate cacheability metadata.
+ */
+function drupoll_question_own_or_any_access(DrupollQuestionInterface $question, AccountInterface $account, string $operation): AccessResultInterface {
+  $any = AccessResult::allowedIfHasPermission($account, "$operation for any drupoll question");
+
+  $own = AccessResult::allowedIf(
+    $account->hasPermission("$operation for own drupoll question") && $account->id() == $question->getOwnerId()
+  )->cachePerPermissions()->cachePerUser()->addCacheableDependency($question);
+
+  return $any->orIf($own);
+}
+
+/**
+ * Implements hook_entity_predelete().
+ */
+function drupoll_entity_predelete(EntityInterface $entity) {
+  // Cascade: deleting a question deletes the votes cast on it. Its answers
+  // are intentionally left untouched so they remain available for reuse on
+  // future questions.
+  if ($entity instanceof DrupollQuestionInterface) {
+    \Drupal::service('drupoll.vote_manager')->deleteVotesForQuestion((int) $entity->id());
+  }
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function drupoll_entity_insert(EntityInterface $entity) {
+  // Casting a new vote changes the results for its parent question (the
+  // total count and every answer's percentage), and may also change
+  // whether the vote form itself is available to the voter. Neither of
+  // these is automatically reflected by the vote entity's own cache tags,
+  // since the question is a separate entity, so the question's cache tag
+  // is invalidated explicitly here.
+  if ($entity instanceof DrupollVoteInterface) {
+    $quid = $entity->get('quid')->target_id;
+    if ($quid) {
+      Cache::invalidateTags(['drupoll_question:' . $quid]);
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_delete().
+ */
+function drupoll_entity_delete(EntityInterface $entity) {
+  // Deleting a vote (individually, or as part of the predelete cascade
+  // above) similarly changes the parent question's results and, per the
+  // module's design, reopens the vote form for the affected user. Both
+  // effects require the question's cache tag to be invalidated.
+  if ($entity instanceof DrupollVoteInterface) {
+    $quid = $entity->get('quid')->target_id;
+    if ($quid) {
+      Cache::invalidateTags(['drupoll_question:' . $quid]);
+    }
+  }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function drupoll_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if ($view->id() !== 'drupoll_votes') {
     return;
   }
 
   $account = \Drupal::currentUser();
-  $entity = $form_state->getFormObject()->getEntity();
 
-  /** @var \Drupal\drupoll\Entity\QuestionInterface $entity */
-  $is_owner = $entity->isNew() || $entity->getOwnerId() == $account->id();
-
-  $can_assign = $account->hasPermission('assign answers to any question')
-    || ($is_owner && $account->hasPermission('assign answers to own questions'));
-
-  $can_create = $account->hasPermission('create answers');
-
-  if (isset($form['field_answers']['widget'])) {
-    $widget = &$form['field_answers']['widget'];
-    $widget['#allow_existing'] = $can_assign;
-    $widget['#allow_new'] = $can_create;
-
-    if (!$can_assign && !$can_create) {
-      $widget['#disabled'] = TRUE;
-      $widget['#description'] = t('You do not have permission to assign or create answers.');
-    }
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_presave() for question entities.
- *
- * Auto-generates a revision log message summarizing field changes.
- */
-function drupoll_question_presave(QuestionInterface $entity) {
-  _drupoll_generate_revision_log($entity);
-}
-
-/**
- * Implements hook_ENTITY_TYPE_presave() for answer entities.
- */
-function drupoll_answer_presave(\Drupal\drupoll\Entity\AnswerInterface $entity) {
-  _drupoll_generate_revision_log($entity);
-}
-
-/**
- * Generates a diff-based revision log message for revisionable entities.
- */
-function _drupoll_generate_revision_log($entity) {
-  if ($entity->isNew() || !$entity->getEntityType()->isRevisionable()) {
+  // Users who can see or manage any vote see the full, unfiltered listing.
+  if ($account->hasPermission('view any drupoll vote') || $account->hasPermission('delete any drupoll vote')) {
     return;
   }
 
-  $storage = \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId());
-  $original = $storage->loadUnchanged($entity->id());
+  // Everyone else reaching this view (per DrupollOwnOrAnyVotePermission)
+  // holds only an "own" permission, so the listing is restricted to votes
+  // they themselves cast.
+  if ($account->hasPermission('view own drupoll votes') || $account->hasPermission('delete own drupoll vote')) {
+    $query->addWhere(0, 'drupoll_votes.uid', $account->id(), '=');
+  }
+}
 
-  if (!$original) {
-    return;
+/**
+ * Implements hook_preprocess_HOOK() for drupoll-question.html.twig.
+ */
+function template_preprocess_drupoll_question(array &$variables) {
+  /** @var \Drupal\drupoll\Entity\DrupollQuestionInterface $question */
+  $question = $variables['elements']['#drupoll_question'];
+  $variables['question'] = $question;
+  $variables['title'] = $question->label();
+  $variables['url'] = $question->toUrl();
+
+  $variables['attributes']['id'] = 'drupoll-vote-wrapper-' . $question->id();
+
+  $variables['content'] = [];
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
   }
 
-  $changed_fields = [];
-  foreach ($entity->getFieldDefinitions() as $field_name => $definition) {
-    if ($definition->isComputed()) {
-      continue;
-    }
-    if ($entity->get($field_name)->getValue() != $original->get($field_name)->getValue()) {
-      $changed_fields[] = $definition->getLabel();
-    }
+  $account = \Drupal::currentUser();
+  /** @var \Drupal\drupoll\VoteCheckerInterface $vote_checker */
+  $vote_checker = \Drupal::service('drupoll.vote_checker');
+
+  $is_authenticated = $account->isAuthenticated();
+  $has_voted = $is_authenticated
+    ? $vote_checker->hasVoted((int) $question->id(), (int) $account->id())
+    : FALSE;
+  $voting_open = $question->isVotingOpen();
+
+  $variables['is_authenticated'] = $is_authenticated;
+  $variables['has_voted'] = $has_voted;
+  $variables['voting_open'] = $voting_open;
+
+  // The vote form is shown only when voting is open, the viewer is
+  // authenticated, and they have not already voted.
+  $variables['show_vote_form'] = $voting_open && $is_authenticated && !$has_voted;
+
+  if ($variables['show_vote_form']) {
+    $variables['vote_form'] = \Drupal::formBuilder()->getForm(DrupollVoteForm::class, $question);
   }
 
-  if (!empty($changed_fields)) {
-    $entity->setNewRevision(TRUE);
-    $entity->setRevisionLogMessage(
-      t('Updated: @fields', ['@fields' => implode(', ', $changed_fields)])
-    );
-    $entity->setRevisionCreationTime(\Drupal::time()->getRequestTime());
-    $entity->setRevisionUserId(\Drupal::currentUser()->id());
+  // Anonymous visitors are never shown the vote form; instead they see a
+  // message, plus a link to register, unless self-registration is
+  // restricted to administrators only.
+  if (!$is_authenticated) {
+    $register_url = Url::fromRoute('user.register');
+    $variables['show_register_link'] = $register_url->access($account);
+    $variables['register_url'] = $register_url;
+  }
+
+  // Results are visible only when the question's own "show vote count"
+  // setting is enabled, the viewer holds the relevant own/any "view vote
+  // count" permission, and either they have already voted or voting has
+  // since closed (covering the case where voting closed before they could
+  // vote). If "show vote count" is disabled, results are never shown to
+  // anyone, regardless of permission.
+  $show_vote_count = (bool) $question->get('show_vote_count')->value;
+
+  $can_view_count = drupoll_question_own_or_any_access($question, $account, 'view vote count')->isAllowed();
+
+  $variables['show_results'] = $show_vote_count
+    && $can_view_count
+    && ($has_voted || !$voting_open);
+
+  if ($variables['show_results']) {
+    $results = $vote_checker->getResults((int) $question->id());
+    $total = $vote_checker->getTotalVotes((int) $question->id());
+
+    $answer_storage = \Drupal::entityTypeManager()->getStorage('drupoll_answer');
+    $rows = [];
+    foreach ($results as $anid => $data) {
+      /** @var \Drupal\drupoll\Entity\DrupollAnswerInterface|null $answer */
+      $answer = $answer_storage->load($anid);
+      if (!$answer) {
+        continue;
+      }
+      $rows[] = [
+        'label' => $answer->label(),
+        'count' => $data['count'],
+        'percentage' => $data['percentage'],
+      ];
+    }
+
+    $variables['results'] = $rows;
+    $variables['total_votes'] = $total;
+  }
+
+  // This markup's content depends on the viewing user's own vote status,
+  // authentication status, and permissions, and on the live vote tally,
+  // none of which is captured by the entity's own cache tag alone.
+  $variables['#cache']['contexts'][] = 'user';
+  $variables['#cache']['contexts'][] = 'user.permissions';
+  $variables['#cache']['tags'][] = 'drupoll_question:' . $question->id();
+  $variables['#cache']['tags'][] = 'config:user.settings';
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for drupoll-answer.html.twig.
+ */
+function template_preprocess_drupoll_answer(array &$variables) {
+  /** @var \Drupal\drupoll\Entity\DrupollAnswerInterface $answer */
+  $answer = $variables['elements']['#drupoll_answer'];
+  $variables['answer'] = $answer;
+  $variables['title'] = $answer->label();
+  $variables['url'] = $answer->toUrl();
+
+  $variables['content'] = [];
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for drupoll-vote.html.twig.
+ */
+function template_preprocess_drupoll_vote(array &$variables) {
+  /** @var \Drupal\drupoll\Entity\DrupollVoteInterface $vote */
+  $vote = $variables['elements']['#drupoll_vote'];
+  $variables['vote'] = $vote;
+
+  $question = $vote->get('quid')->entity;
+  $answer = $vote->get('anid')->entity;
+  $voter = $vote->getOwner();
+
+  $variables['question_link'] = $question ? $question->toLink()->toRenderable() : NULL;
+  $variables['answer_link'] = $answer ? $answer->toLink()->toRenderable() : NULL;
+  $variables['voter_link'] = $voter ? $voter->toLink()->toRenderable() : NULL;
+  $variables['created'] = \Drupal::service('date.formatter')->format($vote->get('created')->value, 'medium');
+
+  $variables['content'] = [];
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
   }
 }

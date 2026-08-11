@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: drupoll_answer
+label: Answer
+description: 'The default answer type.'

@@ -1,0 +1,4 @@
+drupoll.user_votes_tab:
+  route_name: drupoll.user_votes
+  title: 'Votes'
+  base_route: entity.user.canonical

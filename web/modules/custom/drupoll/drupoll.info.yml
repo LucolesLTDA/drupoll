@@ -1,11 +1,11 @@
-name: 'Drupoll'
+name: Drupoll
 type: module
-description: 'Provides a voting system with Question, Answer, and Vote entities.'
+description: 'Provides polling functionality with Question, Answer, and Vote entities.'
 package: Custom
-core_version_requirement: ^10 || ^11
+core_version_requirement: ^10.2 || ^11
 dependencies:
-  - drupal:media
   - drupal:field
-  - drupal:text
-  - drupal:options
+  - drupal:user
+  - drupal:views
   - inline_entity_form:inline_entity_form
+  - pathauto:pathauto

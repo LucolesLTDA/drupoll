@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Drupoll module.
+ */
+
+use Drupal\Core\Database\Database;
+
+/**
+ * Implements hook_install().
+ */
+function drupoll_install($is_syncing) {
+  \Drupal::logger('drupoll')->notice('Drupoll installed. Default bundles "question" and "answer" were created from config/install.');
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function drupoll_uninstall($is_syncing) {
+  $logger = \Drupal::logger('drupoll');
+  $schema = Database::getConnection()->schema();
+
+  // Entity type schema (drupoll_questions, drupoll_answers, drupoll_votes
+  // and their multi-value field tables such as
+  // drupoll_questions__answers) is normally dropped automatically by
+  // \Drupal\Core\Entity\Sql\SqlContentEntityStorage as part of the content
+  // entity type's own uninstall handling, and the question_type/answer_type
+  // config entities are deleted automatically as config that depends on
+  // this module. The checks below are a defensive fallback in case any of
+  // that schema was left behind (for example, if entities were deleted out
+  // of band, or a previous failed uninstall left orphaned tables).
+  $drupoll_tables = [
+    'drupoll_questions',
+    'drupoll_questions__answers',
+    'drupoll_answers',
+    'drupoll_votes',
+  ];
+
+  foreach ($drupoll_tables as $table) {
+    if ($schema->tableExists($table)) {
+      $schema->dropTable($table);
+      $logger->warning('Dropped orphaned table "@table" during Drupoll uninstall. This table should have been removed automatically; please report this if it recurs.', [
+        '@table' => $table,
+      ]);
+    }
+  }
+
+  // Defensive cleanup of any leftover key/value or state entries the
+  // module may have written outside of configuration (none are currently
+  // used by Drupoll, but this guards against future additions being
+  // forgotten here).
+  \Drupal::state()->deleteMultiple([
+    'drupoll.last_cron_cleanup',
+  ]);
+
+  $logger->notice('Drupoll uninstalled. All Drupoll entities, fields, and configuration have been removed.');
+}

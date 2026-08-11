@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - drupoll
+id: drupoll_vote.drupoll_vote.default
+targetEntityType: drupoll_vote
+bundle: drupoll_vote
+mode: default
+content: {}
+hidden:
+  uid: true
+  quid: true
+  anid: true
+  created: true
+third_party_settings: {  }

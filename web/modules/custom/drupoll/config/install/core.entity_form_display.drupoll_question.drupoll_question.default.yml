@@ -1,0 +1,47 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - drupoll.question_type.drupoll_question
+  module:
+    - drupoll
+    - inline_entity_form
+id: drupoll_question.drupoll_question.default
+targetEntityType: drupoll_question
+bundle: drupoll_question
+mode: default
+content:
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  answers:
+    type: inline_entity_form_complex
+    weight: 1
+    region: content
+    settings:
+      form_mode: default
+      override_labels: true
+      label_singular: answer
+      label_plural: answers
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+      allow_duplicate: false
+    third_party_settings: {  }
+  show_vote_count:
+    type: boolean_checkbox
+    weight: 2
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  uid: true
+  created: true
+  voting_status: true
+third_party_settings: {  }

@@ -1,0 +1,38 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a Drupoll vote.
+ *
+ * Available variables:
+ * - vote: The vote entity.
+ * - question_link: A render array linking to the question, or NULL.
+ * - answer_link: A render array linking to the answer, or NULL.
+ * - voter_link: A render array linking to the voter, or NULL.
+ * - created: The formatted date the vote was cast.
+ * - content: Rendered fields, keyed by field name.
+ *
+ * @ingroup themeable
+ */
+#}
+<article{{ attributes }}>
+  <p>
+    {% if voter_link %}
+      {{ voter_link }}
+    {% endif %}
+    {{ 'voted for'|t }}
+    {% if answer_link %}
+      {{ answer_link }}
+    {% endif %}
+    {{ 'on'|t }}
+    {% if question_link %}
+      {{ question_link }}
+    {% endif %}
+    ({{ created }}).
+  </p>
+
+  {% if content %}
+    <div class="drupoll-vote__fields">
+      {{ content }}
+    </div>
+  {% endif %}
+</article>

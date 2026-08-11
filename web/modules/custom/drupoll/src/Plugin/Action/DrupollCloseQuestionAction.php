@@ -1,0 +1,46 @@
+<?php
+
+namespace Drupal\drupoll\Plugin\Action;
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Action\ActionBase;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\drupoll\Entity\DrupollQuestionInterface;
+
+/**
+ * Closes voting on a question.
+ *
+ * @Action(
+ *   id = "drupoll_close_question_action",
+ *   label = @Translation("Close voting"),
+ *   type = "drupoll_question"
+ * )
+ */
+class DrupollCloseQuestionAction extends ActionBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function execute($entity = NULL) {
+    if ($entity instanceof DrupollQuestionInterface && $entity->isVotingOpen()) {
+      $entity->setVotingOpen(FALSE)->save();
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function access($object, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
+    /** @var \Drupal\drupoll\Entity\DrupollQuestionInterface $object */
+    $account = $account ?: \Drupal::currentUser();
+
+    if (!$object->isVotingOpen()) {
+      $result = AccessResult::forbidden('Voting is already closed for this question.')->addCacheableDependency($object);
+      return $return_as_object ? $result : $result->isAllowed();
+    }
+
+    $result = drupoll_question_own_or_any_access($object, $account, 'close voting');
+    return $return_as_object ? $result : $result->isAllowed();
+  }
+
+}

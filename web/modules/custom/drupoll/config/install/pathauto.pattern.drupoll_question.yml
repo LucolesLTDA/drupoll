@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - drupoll
+    - pathauto
+id: drupoll_question
+label: 'Drupoll question'
+type: 'canonical_entities:drupoll_question'
+pattern: '/poll/[drupoll_question:title]'
+selection_criteria: {  }
+selection_logic: and
+weight: 0
+relationships: {  }

@@ -1,0 +1,84 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a Drupoll question.
+ *
+ * Available variables:
+ * - question: The question entity.
+ * - title: The question's title.
+ * - url: The question's canonical URL.
+ * - content: Rendered fields, keyed by field name.
+ * - show_vote_form: Whether the vote form should be rendered.
+ * - vote_form: The rendered vote form, if show_vote_form is TRUE.
+ * - show_results: Whether vote results should be rendered.
+ * - results: An array of ['label', 'count', 'percentage'], if show_results
+ *   is TRUE.
+ * - total_votes: The total number of votes cast, if show_results is TRUE.
+ * - voting_open: Whether voting is currently open on this question.
+ * - has_voted: Whether the current user has already voted.
+ * - is_authenticated: Whether the current user is logged in.
+ * - attributes: HTML attributes for the wrapper, including the id used as
+ *   the AJAX replacement target for the embedded vote form.
+ *
+ * @ingroup themeable
+ */
+#}
+<article{{ attributes }}>
+
+  <h2><a href="{{ url }}">{{ title }}</a></h2>
+
+  {% if content %}
+    <div class="drupoll-question__fields">
+      {{ content }}
+    </div>
+  {% endif %}
+
+  <div class="drupoll-question__voting">
+
+    {% if show_vote_form %}
+      {{ vote_form }}
+    {% elseif not is_authenticated %}
+      <p class="drupoll-question__status">
+        {{ 'Only registered users may vote.'|t }}
+        {% if show_register_link %}
+          {{ link('Please create an account.'|t, register_url) }}
+        {% endif %}
+      </p>
+    {% elseif not voting_open %}
+      <p class="drupoll-question__status">{{ 'Voting is closed for this question.'|t }}</p>
+    {% elseif has_voted %}
+      <p class="drupoll-question__status">{{ 'You have already voted on this question.'|t }}</p>
+    {% endif %}
+
+    {% if show_results %}
+      <div class="drupoll-question__results">
+        <h3>{{ 'Results'|t }} ({{ 'total votes: @count'|t({'@count': total_votes}) }})</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>{{ 'Answer'|t }}</th>
+              <th>{{ 'Votes'|t }}</th>
+              <th>{{ 'Percentage'|t }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in results %}
+              <tr>
+                <td>{{ row.label }}</td>
+                <td>{{ row.count }}</td>
+                <td>
+                  <div class="drupoll-question__bar-track">
+                    <div class="drupoll-question__bar-fill" style="width: {{ row.percentage }}%"></div>
+                  </div>
+                  {{ row.percentage }}%
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+
+  </div>
+
+</article>

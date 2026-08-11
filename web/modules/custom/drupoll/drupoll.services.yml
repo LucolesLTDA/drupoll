@@ -1,0 +1,16 @@
+services:
+  drupoll.answer_reference_checker:
+    class: Drupal\drupoll\AnswerReferenceChecker
+    arguments: ['@database']
+
+  drupoll.vote_checker:
+    class: Drupal\drupoll\VoteChecker
+    arguments: ['@database', '@entity_type.manager']
+
+  drupoll.vote_manager:
+    class: Drupal\drupoll\VoteManager
+    arguments: ['@entity_type.manager', '@drupoll.vote_checker', '@logger.channel.drupoll', '@string_translation']
+
+  logger.channel.drupoll:
+    parent: logger.channel_base
+    arguments: ['drupoll']

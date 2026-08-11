@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: drupoll_question
+label: Question
+description: 'The default question type.'

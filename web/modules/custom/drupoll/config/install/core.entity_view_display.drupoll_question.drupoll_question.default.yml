@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - drupoll.question_type.drupoll_question
+  module:
+    - drupoll
+id: drupoll_question.drupoll_question.default
+targetEntityType: drupoll_question
+bundle: drupoll_question
+mode: default
+content: {}
+hidden:
+  title: true
+  uid: true
+  created: true
+  voting_status: true
+  answers: true
+  show_vote_count: true
+third_party_settings: {  }
