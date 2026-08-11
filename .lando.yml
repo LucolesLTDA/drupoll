@@ -7,3 +7,8 @@ config:
   composer_version: 2-latest
   drush: ^13
   webroot: web
+services:
+  phpmyadmin:
+    type: phpmyadmin
+    hosts:
+      - database
