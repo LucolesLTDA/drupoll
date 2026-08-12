@@ -43,7 +43,7 @@ class AnswerReferenceChecker {
    *   the answer.
    */
   public function getReferencingQuestionIds(int $anid): array {
-    $quids = $this->database->select('drupoll_questions__answers', 'qa')
+    $quids = $this->database->select('drupoll_question__answers', 'qa')
       ->fields('qa', ['entity_id'])
       ->condition('qa.answers_target_id', $anid)
       ->execute()

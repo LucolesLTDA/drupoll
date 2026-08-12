@@ -21,9 +21,9 @@ function drupoll_uninstall($is_syncing) {
   $logger = \Drupal::logger('drupoll');
   $schema = Database::getConnection()->schema();
 
-  // Entity type schema (drupoll_questions, drupoll_answers, drupoll_votes
+  // Entity type schema (drupoll_question, drupoll_answer, drupoll_votes
   // and their multi-value field tables such as
-  // drupoll_questions__answers) is normally dropped automatically by
+  // drupoll_question__answers) is normally dropped automatically by
   // \Drupal\Core\Entity\Sql\SqlContentEntityStorage as part of the content
   // entity type's own uninstall handling, and the question_type/answer_type
   // config entities are deleted automatically as config that depends on
@@ -31,9 +31,9 @@ function drupoll_uninstall($is_syncing) {
   // that schema was left behind (for example, if entities were deleted out
   // of band, or a previous failed uninstall left orphaned tables).
   $drupoll_tables = [
-    'drupoll_questions',
-    'drupoll_questions__answers',
-    'drupoll_answers',
+    'drupoll_question',
+    'drupoll_question__answers',
+    'drupoll_answer',
     'drupoll_votes',
   ];
 

@@ -4,13 +4,13 @@ dependencies:
   module:
     - drupoll
     - user
-id: drupoll_answers
-label: 'Drupoll answers'
+id: drupoll_question
+label: 'Drupoll questions'
 module: views
-description: 'Administrative listing of all Drupoll answers.'
+description: 'Administrative listing of all Drupoll questions.'
 tag: ''
-base_table: drupoll_answers
-base_field: anid
+base_table: drupoll_question
+base_field: quid
 display:
   default:
     id: default
@@ -18,21 +18,21 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: Answers
+      title: Questions
       fields:
-        anid:
-          id: anid
-          table: drupoll_answers
-          field: anid
-          entity_type: drupoll_answer
-          entity_field: anid
+        quid:
+          id: quid
+          table: drupoll_question
+          field: quid
+          entity_type: drupoll_question
+          entity_field: quid
           plugin_id: field
           label: ID
         title:
           id: title
-          table: drupoll_answers
+          table: drupoll_question
           field: title
-          entity_type: drupoll_answer
+          entity_type: drupoll_question
           entity_field: title
           plugin_id: field
           label: Title
@@ -40,19 +40,33 @@ display:
             link_to_entity: true
         uid:
           id: uid
-          table: drupoll_answers
+          table: drupoll_question
           field: uid
-          entity_type: drupoll_answer
+          entity_type: drupoll_question
           entity_field: uid
           plugin_id: field
           label: Author
           settings:
             link: true
+        voting_status:
+          id: voting_status
+          table: drupoll_question
+          field: voting_status
+          entity_type: drupoll_question
+          entity_field: voting_status
+          plugin_id: field
+          label: 'Voting status'
+          type: boolean
+          settings:
+            format: 'yes-no'
+            format_custom_false: ''
+            format_custom_true: ''
+          third_party_settings: {  }
         created:
           id: created
-          table: drupoll_answers
+          table: drupoll_question
           field: created
-          entity_type: drupoll_answer
+          entity_type: drupoll_question
           entity_field: created
           plugin_id: field
           label: Created
@@ -60,9 +74,9 @@ display:
             date_format: short
         drupoll_bulk_form:
           id: drupoll_bulk_form
-          table: drupoll_answers
+          table: drupoll_question
           field: drupoll_bulk_form
-          entity_type: drupoll_answer
+          entity_type: drupoll_question
           plugin_id: bulk_form
           label: 'Bulk update'
           action_title: Action
@@ -70,9 +84,9 @@ display:
           selected_actions: {  }
         operations:
           id: operations
-          table: drupoll_answers
+          table: drupoll_question
           field: operations
-          entity_type: drupoll_answer
+          entity_type: drupoll_question
           plugin_id: entity_operations
           label: Operations
       pager:
@@ -90,7 +104,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'create drupoll answer'
+          perm: 'create drupoll question'
       cache:
         type: tag
       query:
@@ -102,20 +116,23 @@ display:
         type: table
         options:
           columns:
-            anid: anid
+            quid: quid
             title: title
             uid: uid
+            voting_status: voting_status
             created: created
             drupoll_bulk_form: drupoll_bulk_form
             operations: operations
           default: created
           info:
-            anid:
+            quid:
               sortable: true
             title:
               sortable: true
             uid:
               sortable: false
+            voting_status:
+              sortable: true
             created:
               sortable: true
           override: true
@@ -124,9 +141,9 @@ display:
       filters:
         title:
           id: title
-          table: drupoll_answers
+          table: drupoll_question
           field: title
-          entity_type: drupoll_answer
+          entity_type: drupoll_question
           entity_field: title
           plugin_id: string
           operator: contains
@@ -140,9 +157,9 @@ display:
       sorts:
         created:
           id: created
-          table: drupoll_answers
+          table: drupoll_question
           field: created
-          entity_type: drupoll_answer
+          entity_type: drupoll_question
           entity_field: created
           plugin_id: date
           order: DESC
@@ -153,9 +170,9 @@ display:
     display_plugin: page
     position: 1
     display_options:
-      path: admin/content/answers
+      path: admin/content/questions
       menu:
         type: tab
-        title: Answers
-        weight: 1
+        title: Questions
+        weight: 0
       display_extenders: {  }

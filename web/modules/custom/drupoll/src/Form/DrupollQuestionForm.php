@@ -19,13 +19,24 @@ class DrupollQuestionForm extends ContentEntityForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    $answers = $form_state->getValue('answers');
-    $entities = is_array($answers) && isset($answers['entities']) && is_array($answers['entities'])
-      ? $answers['entities']
-      : [];
-    $answer_count = count(array_filter($entities, static fn ($item) => !empty($item['entity'])));
+    $answer_count = 0;
 
-    if ($answer_count < 2) {
+    // Get the raw values for the 'answers' field from form_state.
+    $answers_field_values = $form_state->getValue('answers');
+
+    // Based on the dump, the active IEF items are found under the 'entities' key.
+    if (isset($answers_field_values['entities']) && is_array($answers_field_values['entities'])) {
+      // The count of elements in this 'entities' array directly corresponds
+      // to the number of answers IEF is currently managing (new or existing).
+      $answer_count = count($answers_field_values['entities']);
+    }
+
+    \Drupal::logger('drupoll')->notice('Final answer count from form_state entities: @count', ['@count' => $answer_count]);
+
+    if ($answer_count === 0) {
+      $form_state->setErrorByName('answers', $this->t('Your question is lacking answers.'));
+    }
+    elseif ($answer_count < 2) {
       $form_state->setErrorByName('answers', $this->t('A question must have at least 2 answers.'));
     }
   }

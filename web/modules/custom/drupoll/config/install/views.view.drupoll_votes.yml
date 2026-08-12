@@ -58,7 +58,7 @@ display:
           label: ID
         title:
           id: title
-          table: drupoll_questions
+          table: drupoll_question
           field: title
           relationship: quid
           entity_type: drupoll_question
@@ -69,7 +69,7 @@ display:
             link_to_entity: true
         title_1:
           id: title_1
-          table: drupoll_answers
+          table: drupoll_answer
           field: title
           relationship: anid
           entity_type: drupoll_answer

@@ -38,7 +38,7 @@ use Drupal\user\UserInterface;
  *     },
  *     "views_data" = "Drupal\views\EntityViewsData",
  *   },
- *   base_table = "drupoll_answers",
+ *   base_table = "drupoll_answer",
  *   admin_permission = "administer drupoll answer fields",
  *   entity_keys = {
  *     "id" = "anid",

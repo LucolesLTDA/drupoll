@@ -16,7 +16,7 @@ class DrupollAnswerStorageSchema extends SqlContentEntityStorageSchema {
   protected function getEntitySchema(ContentEntityTypeInterface $entity_type, $reset = FALSE) {
     $schema = parent::getEntitySchema($entity_type, $reset);
 
-    $schema['drupoll_answers']['indexes'] += [
+    $schema['drupoll_answer']['indexes'] += [
       'drupoll_answer__uid' => ['uid'],
     ];
 

@@ -42,7 +42,7 @@ class DrupollAnswerAutocompleteController extends ControllerBase {
    * Handles autocomplete requests for answer titles.
    *
    * Matches on CONTAINS against the title of existing answers (i.e. rows
-   * currently present in drupoll_answers; answers have no soft-delete
+   * currently present in drupoll_answer; answers have no soft-delete
    * state, so "existing" simply means not yet deleted) and returns up to
    * self::LIMIT results, formatted as "Title (anid)" — the format expected
    * by Drupal's entity autocomplete parsing (EntityAutocomplete::extract
@@ -60,7 +60,7 @@ class DrupollAnswerAutocompleteController extends ControllerBase {
     $input = $request->query->get('q');
 
     if ($input !== NULL && $input !== '') {
-      $result = $this->database->select('drupoll_answers', 'a')
+      $result = $this->database->select('drupoll_answer', 'a')
         ->fields('a', ['anid', 'title'])
         ->condition('a.title', '%' . $this->database->escapeLike($input) . '%', 'LIKE')
         ->range(0, self::LIMIT)
