@@ -29,7 +29,8 @@ use Drupal\user\UserInterface;
  *     "list_builder" = "Drupal\drupoll\DrupollAnswerListBuilder",
  *     "access" = "Drupal\drupoll\DrupollAnswerAccessControlHandler",
  *     "form" = {
- *       "delete" = "Drupal\drupoll\Form\DrupollAnswerDeleteForm",
+ *       "add" = "Drupal\drupoll\Form\DrupollAnswerForm",
+ *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
  *       "inline" = "Drupal\drupoll\Form\DrupollAnswerInlineForm",
  *     },
  *     "route_provider" = {
@@ -49,6 +50,7 @@ use Drupal\user\UserInterface;
  *   field_ui_base_route = "entity.drupoll_answer_type.edit_form",
  *   links = {
  *     "canonical" = "/answer/{drupoll_answer}",
+ *     "add-form" = "/answer/add",
  *     "delete-form" = "/answer/{drupoll_answer}/delete",
  *     "collection" = "/admin/content/answers",
  *   },

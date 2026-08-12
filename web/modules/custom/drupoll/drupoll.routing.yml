@@ -11,8 +11,13 @@ entity.drupoll_question.add_form:
   defaults:
     _entity_form: 'drupoll_question.add'
     _title: 'Add question'
+    drupoll_question_type: drupoll_question
   requirements:
     _permission: 'create drupoll question'
+  options:
+    parameters:
+      drupoll_question_type:
+        type: entity:drupoll_question_type
 
 entity.drupoll_question.delete_form:
   path: '/question/{drupoll_question}/delete'
@@ -53,6 +58,20 @@ entity.drupoll_answer.canonical:
     _title_callback: '\Drupal\drupoll\Controller\DrupollAnswerController::title'
   requirements:
     _entity_access: 'drupoll_answer.view'
+
+entity.drupoll_answer.add_form:
+  path: '/answer/add'
+  defaults:
+    _entity_form: 'drupoll_answer.add'
+    _title: 'Add Answer'
+    drupoll_answer_type: drupoll_answer
+  requirements:
+    _permission: 'create drupoll answer'
+  options:
+    _admin_route: TRUE
+    parameters:
+      drupoll_answer_type:
+        type: entity:drupoll_answer_type
 
 entity.drupoll_answer.delete_form:
   path: '/answer/{drupoll_answer}/delete'

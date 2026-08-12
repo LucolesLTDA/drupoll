@@ -196,6 +196,7 @@ class DrupollQuestion extends ContentEntityBase implements DrupollQuestionInterf
           'allow_existing' => TRUE,
           'match_operator' => 'CONTAINS',
           'allow_duplicate' => FALSE,
+          'form_mode' => 'default',
         ],
       ])
       ->setDisplayConfigurable('form', TRUE)

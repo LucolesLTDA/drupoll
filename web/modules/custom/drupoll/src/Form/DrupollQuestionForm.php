@@ -20,7 +20,10 @@ class DrupollQuestionForm extends ContentEntityForm {
     parent::validateForm($form, $form_state);
 
     $answers = $form_state->getValue('answers');
-    $answer_count = is_array($answers) ? count(array_filter($answers, static fn ($item) => !empty($item['target_id']) || !empty($item['entity']))) : 0;
+    $entities = is_array($answers) && isset($answers['entities']) && is_array($answers['entities'])
+      ? $answers['entities']
+      : [];
+    $answer_count = count(array_filter($entities, static fn ($item) => !empty($item['entity'])));
 
     if ($answer_count < 2) {
       $form_state->setErrorByName('answers', $this->t('A question must have at least 2 answers.'));
