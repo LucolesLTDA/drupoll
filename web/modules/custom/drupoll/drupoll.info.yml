@@ -7,5 +7,6 @@ dependencies:
   - drupal:field
   - drupal:user
   - drupal:views
+  - views_bulk_operations:views_bulk_operations
   - inline_entity_form:inline_entity_form
   - pathauto:pathauto

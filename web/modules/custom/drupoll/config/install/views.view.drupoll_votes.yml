@@ -1,9 +1,13 @@
+uuid: 7383ec85-3cb0-40eb-bf95-12d6911561ae
 langcode: en
 status: true
 dependencies:
   module:
     - drupoll
     - user
+    - views_bulk_operations
+_core:
+  default_config_hash: la-LJCZvD7yi8MwPBqEs9Q1oCEFTh6uYPmFhCEUmxHU
 id: drupoll_votes
 label: 'Drupoll votes'
 module: views
@@ -19,35 +23,73 @@ display:
     position: 0
     display_options:
       title: Votes
-      relationships:
-        quid:
-          id: quid
-          table: drupoll_votes
-          field: quid
-          entity_type: drupoll_vote
-          entity_field: quid
-          plugin_id: standard
-          label: Question
-          required: true
-        anid:
-          id: anid
-          table: drupoll_votes
-          field: anid
-          entity_type: drupoll_vote
-          entity_field: anid
-          plugin_id: standard
-          label: Answer
-          required: true
-        uid:
-          id: uid
-          table: drupoll_votes
-          field: uid
-          entity_type: drupoll_vote
-          entity_field: uid
-          plugin_id: standard
-          label: Voter
-          required: true
       fields:
+        views_bulk_operations_bulk_form:
+          id: views_bulk_operations_bulk_form
+          table: views
+          field: views_bulk_operations_bulk_form
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: views_bulk_operations_bulk_form
+          label: 'Views bulk operations'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          batch: true
+          batch_size: 10
+          form_step: true
+          ajax_loader: false
+          buttons: false
+          action_title: Action
+          clear_on_exposed: true
+          show_multipage_selection_box: default
+          show_select_all: default
+          selected_actions:
+            -
+              action_id: drupoll_delete_vote_action
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: ''
+                message_override: ''
         vtid:
           id: vtid
           table: drupoll_votes
@@ -99,16 +141,6 @@ display:
           label: 'Cast on'
           settings:
             date_format: short
-        drupoll_bulk_form:
-          id: drupoll_bulk_form
-          table: drupoll_votes
-          field: drupoll_bulk_form
-          entity_type: drupoll_vote
-          plugin_id: bulk_form
-          label: 'Bulk update'
-          action_title: Action
-          include_exclude: exclude
-          selected_actions: {  }
         operations:
           id: operations
           table: drupoll_votes
@@ -119,8 +151,8 @@ display:
       pager:
         type: mini
         options:
-          items_per_page: 50
           offset: 0
+          items_per_page: 50
       exposed_form:
         type: basic
         options:
@@ -133,11 +165,16 @@ display:
         options: {  }
       cache:
         type: tag
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
+      sorts:
+        created:
+          id: created
+          table: drupoll_votes
+          field: created
+          entity_type: drupoll_vote
+          entity_field: created
+          plugin_id: date
+          order: DESC
+      arguments: {  }
       style:
         type: table
         options:
@@ -164,25 +201,63 @@ display:
           override: true
       row:
         type: fields
-      sorts:
-        created:
-          id: created
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: false
+      relationships:
+        quid:
+          id: quid
           table: drupoll_votes
-          field: created
+          field: quid
           entity_type: drupoll_vote
-          entity_field: created
-          plugin_id: date
-          order: DESC
-      arguments: {  }
+          entity_field: quid
+          plugin_id: standard
+          required: true
+          label: Question
+        anid:
+          id: anid
+          table: drupoll_votes
+          field: anid
+          entity_type: drupoll_vote
+          entity_field: anid
+          plugin_id: standard
+          required: true
+          label: Answer
+        uid:
+          id: uid
+          table: drupoll_votes
+          field: uid
+          entity_type: drupoll_vote
+          entity_field: uid
+          plugin_id: standard
+          required: true
+          label: Voter
+      display_extenders: {  }
+    cache_metadata:
+      max-age: 0
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url.query_args
+      tags: {  }
   page_1:
     id: page_1
     display_title: Page
     display_plugin: page
     position: 1
     display_options:
+      display_extenders: {  }
       path: admin/content/votes
       menu:
         type: tab
         title: Votes
         weight: 2
-      display_extenders: {  }
+    cache_metadata:
+      max-age: 0
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url.query_args
+      tags: {  }

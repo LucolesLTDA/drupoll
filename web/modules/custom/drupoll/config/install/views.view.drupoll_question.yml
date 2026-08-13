@@ -1,11 +1,15 @@
+uuid: 29f6aef7-752e-482a-bb2e-c545d792d0c1
 langcode: en
 status: true
 dependencies:
   module:
     - drupoll
     - user
+    - views_bulk_operations
+_core:
+  default_config_hash: SDFYV8JTGjHD4BLz8R6NlrsFFBi3jPW1L1tvlW28zv8
 id: drupoll_question
-label: 'Drupoll questions'
+label: 'Drupoll Questions'
 module: views
 description: 'Administrative listing of all Drupoll questions.'
 tag: ''
@@ -20,6 +24,86 @@ display:
     display_options:
       title: Questions
       fields:
+        views_bulk_operations_bulk_form:
+          id: views_bulk_operations_bulk_form
+          table: views
+          field: views_bulk_operations_bulk_form
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: views_bulk_operations_bulk_form
+          label: 'Views bulk operations'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          batch: true
+          batch_size: 10
+          form_step: true
+          ajax_loader: false
+          buttons: false
+          action_title: Action
+          clear_on_exposed: true
+          show_multipage_selection_box: default
+          show_select_all: default
+          selected_actions:
+            -
+              action_id: drupoll_delete_question_action
+              preconfiguration:
+                add_confirmation: true
+                confirm_help_text: ''
+                label_override: ''
+                message_override: ''
+            -
+              action_id: drupoll_close_question_action
+              preconfiguration:
+                add_confirmation: true
+                confirm_help_text: ''
+                label_override: ''
+                message_override: ''
+            -
+              action_id: drupoll_open_question_action
+              preconfiguration:
+                add_confirmation: true
+                confirm_help_text: ''
+                label_override: ''
+                message_override: ''
         quid:
           id: quid
           table: drupoll_question
@@ -58,7 +142,7 @@ display:
           label: 'Voting status'
           type: boolean
           settings:
-            format: 'yes-no'
+            format: yes-no
             format_custom_false: ''
             format_custom_true: ''
           third_party_settings: {  }
@@ -72,16 +156,6 @@ display:
           label: Created
           settings:
             date_format: short
-        drupoll_bulk_form:
-          id: drupoll_bulk_form
-          table: drupoll_question
-          field: drupoll_bulk_form
-          entity_type: drupoll_question
-          plugin_id: bulk_form
-          label: 'Bulk update'
-          action_title: Action
-          include_exclude: exclude
-          selected_actions: {  }
         operations:
           id: operations
           table: drupoll_question
@@ -92,8 +166,8 @@ display:
       pager:
         type: mini
         options:
-          items_per_page: 50
           offset: 0
+          items_per_page: 50
       exposed_form:
         type: basic
         options:
@@ -107,11 +181,32 @@ display:
           perm: 'create drupoll question'
       cache:
         type: tag
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
+      sorts:
+        created:
+          id: created
+          table: drupoll_question
+          field: created
+          entity_type: drupoll_question
+          entity_field: created
+          plugin_id: date
+          order: DESC
+      arguments: {  }
+      filters:
+        title:
+          id: title
+          table: drupoll_question
+          field: title
+          entity_type: drupoll_question
+          entity_field: title
+          plugin_id: string
+          operator: contains
+          value: ''
+          exposed: true
+          expose:
+            operator_id: title_op
+            label: Title
+            operator: title_op
+            identifier: title
       style:
         type: table
         options:
@@ -138,41 +233,39 @@ display:
           override: true
       row:
         type: fields
-      filters:
-        title:
-          id: title
-          table: drupoll_question
-          field: title
-          entity_type: drupoll_question
-          entity_field: title
-          plugin_id: string
-          operator: contains
-          value: ''
-          exposed: true
-          expose:
-            operator_id: title_op
-            label: Title
-            identifier: title
-            operator: title_op
-      sorts:
-        created:
-          id: created
-          table: drupoll_question
-          field: created
-          entity_type: drupoll_question
-          entity_field: created
-          plugin_id: date
-          order: DESC
-      arguments: {  }
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: false
+      display_extenders: {  }
+    cache_metadata:
+      max-age: 0
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - user.permissions
+      tags: {  }
   page_1:
     id: page_1
     display_title: Page
     display_plugin: page
     position: 1
     display_options:
+      display_extenders: {  }
       path: admin/content/questions
       menu:
         type: tab
         title: Questions
         weight: 0
-      display_extenders: {  }
+    cache_metadata:
+      max-age: 0
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - user.permissions
+      tags: {  }

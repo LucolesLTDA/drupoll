@@ -1,11 +1,15 @@
+uuid: 5c283020-6aaa-4a9a-adbc-ed6b94c62474
 langcode: en
 status: true
 dependencies:
   module:
     - drupoll
     - user
+    - views_bulk_operations
+_core:
+  default_config_hash: xhiD8l2J1KtpZdlVpjflNktFCbETY2cdEEcuOyyFlMs
 id: drupoll_answer
-label: 'Drupoll answers'
+label: 'Drupoll Answers'
 module: views
 description: 'Administrative listing of all Drupoll answers.'
 tag: ''
@@ -20,6 +24,72 @@ display:
     display_options:
       title: Answers
       fields:
+        views_bulk_operations_bulk_form:
+          id: views_bulk_operations_bulk_form
+          table: views
+          field: views_bulk_operations_bulk_form
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: views_bulk_operations_bulk_form
+          label: 'Views bulk operations'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          batch: true
+          batch_size: 10
+          form_step: true
+          ajax_loader: false
+          buttons: false
+          action_title: Action
+          clear_on_exposed: true
+          show_multipage_selection_box: default
+          show_select_all: default
+          selected_actions:
+            -
+              action_id: views_bulk_operations_delete_entity
+              preconfiguration:
+                add_confirmation: true
+                confirm_help_text: ''
+                label_override: ''
+                message_override: ''
         anid:
           id: anid
           table: drupoll_answer
@@ -58,16 +128,6 @@ display:
           label: Created
           settings:
             date_format: short
-        drupoll_bulk_form:
-          id: drupoll_bulk_form
-          table: drupoll_answer
-          field: drupoll_bulk_form
-          entity_type: drupoll_answer
-          plugin_id: bulk_form
-          label: 'Bulk update'
-          action_title: Action
-          include_exclude: exclude
-          selected_actions: {  }
         operations:
           id: operations
           table: drupoll_answer
@@ -78,8 +138,8 @@ display:
       pager:
         type: mini
         options:
-          items_per_page: 50
           offset: 0
+          items_per_page: 50
       exposed_form:
         type: basic
         options:
@@ -93,11 +153,32 @@ display:
           perm: 'create drupoll answer'
       cache:
         type: tag
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
+      sorts:
+        created:
+          id: created
+          table: drupoll_answer
+          field: created
+          entity_type: drupoll_answer
+          entity_field: created
+          plugin_id: date
+          order: DESC
+      arguments: {  }
+      filters:
+        title:
+          id: title
+          table: drupoll_answer
+          field: title
+          entity_type: drupoll_answer
+          entity_field: title
+          plugin_id: string
+          operator: contains
+          value: ''
+          exposed: true
+          expose:
+            operator_id: title_op
+            label: Title
+            operator: title_op
+            identifier: title
       style:
         type: table
         options:
@@ -121,41 +202,39 @@ display:
           override: true
       row:
         type: fields
-      filters:
-        title:
-          id: title
-          table: drupoll_answer
-          field: title
-          entity_type: drupoll_answer
-          entity_field: title
-          plugin_id: string
-          operator: contains
-          value: ''
-          exposed: true
-          expose:
-            operator_id: title_op
-            label: Title
-            identifier: title
-            operator: title_op
-      sorts:
-        created:
-          id: created
-          table: drupoll_answer
-          field: created
-          entity_type: drupoll_answer
-          entity_field: created
-          plugin_id: date
-          order: DESC
-      arguments: {  }
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: false
+      display_extenders: {  }
+    cache_metadata:
+      max-age: 0
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - user.permissions
+      tags: {  }
   page_1:
     id: page_1
     display_title: Page
     display_plugin: page
     position: 1
     display_options:
+      display_extenders: {  }
       path: admin/content/answers
       menu:
         type: tab
         title: Answers
         weight: 1
-      display_extenders: {  }
+    cache_metadata:
+      max-age: 0
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - user.permissions
+      tags: {  }
