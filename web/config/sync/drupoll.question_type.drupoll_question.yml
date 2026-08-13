@@ -1,0 +1,9 @@
+uuid: 427546a2-f292-4337-9d86-6533a8a268b7
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: Ywcd2ltF2zwEhmfjRyOquapxFkfOYLZG3FEAmtEDv4Q
+id: drupoll_question
+label: Question
+description: 'The default question type.'

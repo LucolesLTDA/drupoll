@@ -1,0 +1,29 @@
+uuid: 856bf150-2c89-496f-8597-abac964975e1
+langcode: en
+status: true
+dependencies:
+  config:
+    - drupoll.answer_type.drupoll_answer
+    - field.storage.drupoll_answer.field_media
+    - media.type.image
+id: drupoll_answer.drupoll_answer.field_media
+field_name: field_media
+entity_type: drupoll_answer
+bundle: drupoll_answer
+label: Media
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

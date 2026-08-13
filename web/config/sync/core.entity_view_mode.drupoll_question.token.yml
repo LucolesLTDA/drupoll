@@ -1,0 +1,11 @@
+uuid: 4c30d0e9-d9ca-46b0-a30c-3548bba4353b
+langcode: en
+status: true
+dependencies:
+  module:
+    - drupoll
+id: drupoll_question.token
+label: Token
+description: null
+targetEntityType: drupoll_question
+cache: true

@@ -1,0 +1,263 @@
+uuid: 7383ec85-3cb0-40eb-bf95-12d6911561ae
+langcode: en
+status: true
+dependencies:
+  module:
+    - drupoll
+    - user
+    - views_bulk_operations
+_core:
+  default_config_hash: bpPAom9HDNTt95hj6U3Au1lRPCHiB3kXLf3rfO8Sy_c
+id: drupoll_votes
+label: 'Drupoll votes'
+module: views
+description: 'Administrative listing of all Drupoll votes.'
+tag: ''
+base_table: drupoll_votes
+base_field: vtid
+display:
+  default:
+    id: default
+    display_title: Default
+    display_plugin: default
+    position: 0
+    display_options:
+      title: Votes
+      fields:
+        views_bulk_operations_bulk_form:
+          id: views_bulk_operations_bulk_form
+          table: views
+          field: views_bulk_operations_bulk_form
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: views_bulk_operations_bulk_form
+          label: 'Views bulk operations'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          batch: true
+          batch_size: 10
+          form_step: true
+          ajax_loader: false
+          buttons: false
+          action_title: Action
+          clear_on_exposed: true
+          show_multipage_selection_box: default
+          show_select_all: default
+          selected_actions:
+            -
+              action_id: drupoll_delete_vote_action
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: ''
+                message_override: ''
+        vtid:
+          id: vtid
+          table: drupoll_votes
+          field: vtid
+          entity_type: drupoll_vote
+          entity_field: vtid
+          plugin_id: field
+          label: ID
+        title:
+          id: title
+          table: drupoll_question
+          field: title
+          relationship: quid
+          entity_type: drupoll_question
+          entity_field: title
+          plugin_id: field
+          label: Question
+          settings:
+            link_to_entity: true
+        title_1:
+          id: title_1
+          table: drupoll_answer
+          field: title
+          relationship: anid
+          entity_type: drupoll_answer
+          entity_field: title
+          plugin_id: field
+          label: Answer
+          settings:
+            link_to_entity: true
+        name:
+          id: name
+          table: users_field_data
+          field: name
+          relationship: uid
+          entity_type: user
+          entity_field: name
+          plugin_id: field
+          label: Voter
+          settings:
+            link_to_entity: true
+        created:
+          id: created
+          table: drupoll_votes
+          field: created
+          entity_type: drupoll_vote
+          entity_field: created
+          plugin_id: field
+          label: 'Cast on'
+          settings:
+            date_format: short
+        operations:
+          id: operations
+          table: drupoll_votes
+          field: operations
+          entity_type: drupoll_vote
+          plugin_id: entity_operations
+          label: Operations
+      pager:
+        type: mini
+        options:
+          offset: 0
+          items_per_page: 50
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: true
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+      access:
+        type: drupoll_own_or_any_vote_permission
+        options: {  }
+      cache:
+        type: tag
+      sorts:
+        created:
+          id: created
+          table: drupoll_votes
+          field: created
+          entity_type: drupoll_vote
+          entity_field: created
+          plugin_id: date
+          order: DESC
+      arguments: {  }
+      style:
+        type: table
+        options:
+          columns:
+            vtid: vtid
+            title: title
+            title_1: title_1
+            name: name
+            created: created
+            drupoll_bulk_form: drupoll_bulk_form
+            operations: operations
+          default: created
+          info:
+            vtid:
+              sortable: true
+            title:
+              sortable: false
+            title_1:
+              sortable: false
+            name:
+              sortable: false
+            created:
+              sortable: true
+          override: true
+      row:
+        type: fields
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: false
+      relationships:
+        quid:
+          id: quid
+          table: drupoll_votes
+          field: quid
+          entity_type: drupoll_vote
+          entity_field: quid
+          plugin_id: standard
+          required: true
+          label: Question
+        anid:
+          id: anid
+          table: drupoll_votes
+          field: anid
+          entity_type: drupoll_vote
+          entity_field: anid
+          plugin_id: standard
+          required: true
+          label: Answer
+        uid:
+          id: uid
+          table: drupoll_votes
+          field: uid
+          entity_type: drupoll_vote
+          entity_field: uid
+          plugin_id: standard
+          required: true
+          label: Voter
+      display_extenders: {  }
+    cache_metadata:
+      max-age: 0
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url.query_args
+      tags: {  }
+  page_1:
+    id: page_1
+    display_title: Page
+    display_plugin: page
+    position: 1
+    display_options:
+      display_extenders: {  }
+      path: admin/content/votes
+      menu:
+        type: tab
+        title: Votes
+        weight: 2
+    cache_metadata:
+      max-age: 0
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url.query_args
+      tags: {  }

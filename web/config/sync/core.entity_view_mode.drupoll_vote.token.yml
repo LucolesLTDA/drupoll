@@ -1,0 +1,11 @@
+uuid: 749ba863-bfd6-48e0-ae96-1cd9ac877b1f
+langcode: en
+status: true
+dependencies:
+  module:
+    - drupoll
+id: drupoll_vote.token
+label: Token
+description: null
+targetEntityType: drupoll_vote
+cache: true

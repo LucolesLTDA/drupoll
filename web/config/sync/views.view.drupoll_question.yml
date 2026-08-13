@@ -1,0 +1,271 @@
+uuid: 29f6aef7-752e-482a-bb2e-c545d792d0c1
+langcode: en
+status: true
+dependencies:
+  module:
+    - drupoll
+    - user
+    - views_bulk_operations
+_core:
+  default_config_hash: a8kJdzbaLt4F62ZdwKHOfgEeEMurb3nI0TG8bIDmEiU
+id: drupoll_question
+label: 'Drupoll Questions'
+module: views
+description: 'Administrative listing of all Drupoll questions.'
+tag: ''
+base_table: drupoll_question
+base_field: quid
+display:
+  default:
+    id: default
+    display_title: Default
+    display_plugin: default
+    position: 0
+    display_options:
+      title: Questions
+      fields:
+        views_bulk_operations_bulk_form:
+          id: views_bulk_operations_bulk_form
+          table: views
+          field: views_bulk_operations_bulk_form
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: views_bulk_operations_bulk_form
+          label: 'Views bulk operations'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          batch: true
+          batch_size: 10
+          form_step: true
+          ajax_loader: false
+          buttons: false
+          action_title: Action
+          clear_on_exposed: true
+          show_multipage_selection_box: default
+          show_select_all: default
+          selected_actions:
+            -
+              action_id: drupoll_delete_question_action
+              preconfiguration:
+                add_confirmation: true
+                confirm_help_text: ''
+                label_override: ''
+                message_override: ''
+            -
+              action_id: drupoll_close_question_action
+              preconfiguration:
+                add_confirmation: true
+                confirm_help_text: ''
+                label_override: ''
+                message_override: ''
+            -
+              action_id: drupoll_open_question_action
+              preconfiguration:
+                add_confirmation: true
+                confirm_help_text: ''
+                label_override: ''
+                message_override: ''
+        quid:
+          id: quid
+          table: drupoll_question
+          field: quid
+          entity_type: drupoll_question
+          entity_field: quid
+          plugin_id: field
+          label: ID
+        title:
+          id: title
+          table: drupoll_question
+          field: title
+          entity_type: drupoll_question
+          entity_field: title
+          plugin_id: field
+          label: Title
+          settings:
+            link_to_entity: true
+        uid:
+          id: uid
+          table: drupoll_question
+          field: uid
+          entity_type: drupoll_question
+          entity_field: uid
+          plugin_id: field
+          label: Author
+          settings:
+            link: true
+        voting_status:
+          id: voting_status
+          table: drupoll_question
+          field: voting_status
+          entity_type: drupoll_question
+          entity_field: voting_status
+          plugin_id: field
+          label: 'Voting status'
+          type: boolean
+          settings:
+            format: yes-no
+            format_custom_false: ''
+            format_custom_true: ''
+          third_party_settings: {  }
+        created:
+          id: created
+          table: drupoll_question
+          field: created
+          entity_type: drupoll_question
+          entity_field: created
+          plugin_id: field
+          label: Created
+          settings:
+            date_format: short
+        operations:
+          id: operations
+          table: drupoll_question
+          field: operations
+          entity_type: drupoll_question
+          plugin_id: entity_operations
+          label: Operations
+      pager:
+        type: mini
+        options:
+          offset: 0
+          items_per_page: 50
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: true
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+      access:
+        type: perm
+        options:
+          perm: 'create drupoll question'
+      cache:
+        type: tag
+      sorts:
+        created:
+          id: created
+          table: drupoll_question
+          field: created
+          entity_type: drupoll_question
+          entity_field: created
+          plugin_id: date
+          order: DESC
+      arguments: {  }
+      filters:
+        title:
+          id: title
+          table: drupoll_question
+          field: title
+          entity_type: drupoll_question
+          entity_field: title
+          plugin_id: string
+          operator: contains
+          value: ''
+          exposed: true
+          expose:
+            operator_id: title_op
+            label: Title
+            operator: title_op
+            identifier: title
+      style:
+        type: table
+        options:
+          columns:
+            quid: quid
+            title: title
+            uid: uid
+            voting_status: voting_status
+            created: created
+            drupoll_bulk_form: drupoll_bulk_form
+            operations: operations
+          default: created
+          info:
+            quid:
+              sortable: true
+            title:
+              sortable: true
+            uid:
+              sortable: false
+            voting_status:
+              sortable: true
+            created:
+              sortable: true
+          override: true
+      row:
+        type: fields
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: false
+      display_extenders: {  }
+    cache_metadata:
+      max-age: 0
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - user.permissions
+      tags: {  }
+  page_1:
+    id: page_1
+    display_title: Page
+    display_plugin: page
+    position: 1
+    display_options:
+      display_extenders: {  }
+      path: admin/content/questions
+      menu:
+        type: tab
+        title: Questions
+        weight: 0
+    cache_metadata:
+      max-age: 0
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - user.permissions
+      tags: {  }

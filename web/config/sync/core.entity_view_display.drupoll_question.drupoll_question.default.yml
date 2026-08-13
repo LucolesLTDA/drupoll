@@ -1,0 +1,20 @@
+uuid: 479661fb-3e4b-40fc-b99f-79f6ebf043b4
+langcode: en
+status: true
+dependencies:
+  config:
+    - drupoll.question_type.drupoll_question
+_core:
+  default_config_hash: U4fywNLqmUEVoTTOx7nwwzD1qC8qWsIJPPx-q3epyW8
+id: drupoll_question.drupoll_question.default
+targetEntityType: drupoll_question
+bundle: drupoll_question
+mode: default
+content: {  }
+hidden:
+  answers: true
+  created: true
+  show_vote_count: true
+  title: true
+  uid: true
+  voting_status: true
