@@ -1,3 +1,24 @@
+# Override the local task provided by the 'drupoll_question' View.
+# This ensures the tab appears on /admin/content.
+
+drupoll.admin_questions:
+  title: 'Questions'
+  route_name: 'entity.drupoll_question.collection'
+  base_route: 'system.admin_content'
+  weight: 100
+
+drupoll.admin_answers:
+  title: 'Answers'
+  route_name: 'entity.drupoll_answer.collection'
+  base_route: 'system.admin_content'
+  weight: 110
+
+drupoll.admin_votes:
+  title: 'Votes'
+  route_name: 'entity.drupoll_vote.collection'
+  base_route: 'system.admin_content'
+  weight: 120
+
 drupoll.user_votes_tab:
   route_name: drupoll.user_votes
   title: 'Votes'
