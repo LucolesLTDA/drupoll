@@ -72,12 +72,21 @@ class DrupollVoteForm extends FormBase {
       $options[$answer->id()] = $answer->label();
     }
 
+    $options = [];
+    $answers_to_render = [];
+    foreach ($drupoll_question->getAnswers() as $answer) {
+      $options[$answer->id()] = $answer->label();
+      $answers_to_render[$answer->id()] = $answer;
+    }
+
     $form['answer'] = [
       '#type' => 'radios',
       '#title' => $this->t('Choose an answer'),
       '#title_display' => 'invisible',
       '#options' => $options,
       '#required' => TRUE,
+      '#theme' => 'form_element_radios__drupoll_answer_options',
+      '#answers_to_render' => $answers_to_render,
     ];
 
     $form['actions'] = ['#type' => 'actions'];

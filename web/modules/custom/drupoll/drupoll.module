@@ -73,6 +73,10 @@ function drupoll_theme($existing, $type, $theme, $path) {
     'drupoll_vote' => [
       'render element' => 'elements',
     ],
+    'form_element_radios__drupoll_answer_options' => [
+      'render element' => 'element',
+      'base hook' => 'form_element',
+    ],
   ];
 }
 
@@ -213,8 +217,13 @@ function template_preprocess_drupoll_question(array &$variables) {
   // authenticated, and they have not already voted.
   $variables['show_vote_form'] = $voting_open && $is_authenticated && !$has_voted;
 
-  if ($variables['show_vote_form']) {
+  // CRITICAL FIX: Only build the form if the question entity is valid.
+  if ($variables['show_vote_form'] && $question instanceof DrupollQuestionInterface) {
     $variables['vote_form'] = \Drupal::formBuilder()->getForm(DrupollVoteForm::class, $question);
+  }
+  else {
+    // Ensure vote_form is explicitly NULL or empty if not shown.
+    $variables['vote_form'] = NULL;
   }
 
   // Anonymous visitors are never shown the vote form; instead they see a
@@ -309,4 +318,64 @@ function template_preprocess_drupoll_vote(array &$variables) {
   foreach (Element::children($variables['elements']) as $key) {
     $variables['content'][$key] = $variables['elements'][$key];
   }
+}
+
+// RENAME THE PREPROCESS FUNCTION to match the new theme hook name.
+/**
+ * Prepares variables for form_element_radios__drupoll_answer_options templates.
+ *
+ * Default theme implementation for a radios form element.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - element: An associative array containing the properties of the element.
+ *     Properties include: #title, #options, #description, #required, #attributes,
+ *     #children, #name, #value, #answers_to_render.
+ */
+function template_preprocess_form_element_radios__drupoll_answer_options(array &$variables) {
+  $element = $variables['element'];
+
+  // Use null coalescing operator (??) for properties to safely access them.
+  $variables['attributes'] = $element['#attributes'] ?? [];
+  $variables['children'] = $element['#children'] ?? '';
+  $variables['title'] = $element['#title'] ?? '';
+  $variables['title_display'] = $element['#title_display'] ?? 'before';
+  $variables['description'] = $element['#description'] ?? '';
+  $variables['required'] = $element['#required'] ?? FALSE;
+
+  // Add this line to pass the child keys explicitly to Twig.
+  $variables['child_keys'] = Element::children($element);
+
+  $rendered_answers = [];
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $view_builder = $entity_type_manager->getViewBuilder('drupoll_answer');
+
+  // The foreach loop will now use the new 'child_keys' variable.
+  foreach ($variables['child_keys'] as $key) { // This loop will now correctly iterate over the keys.
+    $option_element = $element[$key];
+    $value = $option_element['#return_value'] ?? NULL;
+    $original_title = $option_element['#title'] ?? '';
+
+    if ($value !== NULL && isset($element['#answers_to_render'][$value])) {
+      $answer_entity = $element['#answers_to_render'][$value];
+
+      $build = $view_builder->view($answer_entity, 'default');
+
+      if (!empty($build)) {
+        $rendered_html = \Drupal::service('renderer')->render($build);
+
+        if (!empty($rendered_html)) {
+          $rendered_answers[$value] = $rendered_html;
+        } else {
+          $rendered_answers[$value] = $original_title;
+        }
+      } else {
+        $rendered_answers[$value] = $original_title;
+      }
+    }
+    else {
+      $rendered_answers[$value] = $original_title;
+    }
+  }
+  $variables['rendered_answers'] = $rendered_answers;
 }

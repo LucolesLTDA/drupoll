@@ -1,0 +1,45 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a radios form element.
+ *
+ * Available variables:
+ * - element: An associative array containing the properties of the element.
+ *   Properties include: #title, #options, #description, #required, #attributes,
+ *   #children, #name, #value, #answers_to_render.
+ * - attributes: HTML attributes for the wrapper.
+ * - children: The rendered children of the element.
+ * - title: The title of the element.
+ * - title_display: The title display setting.
+ * - description: The description of the element.
+ * - required: A flag indicating whether the element is required.
+ * - rendered_answers: An array of rendered answer entities, keyed by their ID.
+ * - child_keys: An array of keys for the individual radio button elements. <-- NEW
+ *
+ * @see template_preprocess_form_element_radios__drupoll_answer_options()
+ *
+ * @ingroup themeable
+ */
+#}
+{% if title_display == 'before' %}
+  <label{{ attributes.addClass('form-item__label') }}>{{ title }}</label>
+{% endif %}
+<div{{ attributes.addClass('form-radios') }}>
+  {# Iterate over the keys of the children passed from the preprocess function. #}
+  {% for child_key in child_keys %}
+    {% set option_element = element[child_key] %}
+    <div class="form-item form-item--type-radio form-item--name-{{ element['#name']|clean_class }}">
+      <input type="radio" id="{{ option_element['#id'] }}" name="{{ option_element['#name'] }}" value="{{ option_element['#return_value'] }}"{% if option_element['#return_value'] == element['#value'] %} checked="checked"{% endif %}>
+      <label for="{{ option_element['#id'] }}" class="option">
+        {% if rendered_answers[option_element['#return_value']] is not empty %}
+          {{ rendered_answers[option_element['#return_value']]|raw }}
+        {% else %}
+          {{ option_element['#title'] }}
+        {% endif %}
+      </label>
+    </div>
+  {% endfor %}
+  {% if description %}
+    <div class="description">{{ description }}</div>
+  {% endif %}
+</div>
