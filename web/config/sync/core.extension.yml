@@ -22,6 +22,7 @@ module:
   help: 0
   image: 0
   inline_entity_form: 0
+  kint: 0
   layout_builder: 0
   layout_discovery: 0
   link: 0
