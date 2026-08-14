@@ -1,3 +1,19 @@
+# Local task for the "Edit" tab of a Drupoll Question Type.
+# This makes it the primary tab for the bundle configuration pages.
+entity.drupoll_question_type.edit_form:
+  title: 'Edit'
+  route_name: 'entity.drupoll_question_type.edit_form'
+  base_route: 'entity.drupoll_question_type.edit_form'
+  weight: 0 # Ensures it appears as the first tab
+
+# Local task for the "Edit" tab of a Drupoll Answer Type.
+# This makes it the primary tab for the bundle configuration pages.
+entity.drupoll_answer_type.edit_form:
+  title: 'Edit'
+  route_name: 'entity.drupoll_answer_type.edit_form'
+  base_route: 'entity.drupoll_answer_type.edit_form'
+  weight: 0 # Ensures it appears as the first tab
+
 # Override the local task provided by the 'drupoll_question' View.
 # This ensures the tab appears on /admin/content.
 

@@ -1,3 +1,15 @@
+drupoll.question_add:
+  route_name: 'entity.drupoll_question.add_page'
+  title: 'Add question'
+  appears_on:
+    - 'entity.drupoll_question.collection'
+
+drupoll.answer_add:
+  route_name: 'entity.drupoll_answer.add_page'
+  title: 'Add answer'
+  appears_on:
+    - 'entity.drupoll_answer.collection'
+
 drupoll_question.add_action:
   route_name: entity.drupoll_question.add_form
   title: 'Add question'

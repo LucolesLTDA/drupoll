@@ -51,6 +51,7 @@ use Drupal\user\UserInterface;
  *   field_ui_base_route = "entity.drupoll_question_type.edit_form",
  *   links = {
  *     "canonical" = "/question/{drupoll_question}",
+ *     "add-page" = "/drupoll/question/add",
  *     "add-form" = "/question/add",
  *     "delete-form" = "/question/{drupoll_question}/delete",
  *     "collection" = "/admin/content/questions",

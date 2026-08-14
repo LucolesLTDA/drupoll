@@ -50,6 +50,7 @@ use Drupal\user\UserInterface;
  *   field_ui_base_route = "entity.drupoll_answer_type.edit_form",
  *   links = {
  *     "canonical" = "/answer/{drupoll_answer}",
+ *     "add-page" = "/drupoll/answer/add",
  *     "add-form" = "/answer/add",
  *     "delete-form" = "/answer/{drupoll_answer}/delete",
  *     "collection" = "/admin/content/answers",
