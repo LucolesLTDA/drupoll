@@ -1,0 +1,13 @@
+drupoll.question_type_collection:
+  title: 'Drupoll Question Types'
+  description: 'Manage Drupoll question types and their fields.'
+  route_name: 'entity.drupoll_question_type.collection'
+  parent: 'system.admin_structure'
+  weight: 100
+
+drupoll.answer_type_collection:
+  title: 'Drupoll Answer Types'
+  description: 'Manage Drupoll answer types and their fields.'
+  route_name: 'entity.drupoll_answer_type.collection'
+  parent: 'system.admin_structure'
+  weight: 110
