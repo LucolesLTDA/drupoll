@@ -8,6 +8,10 @@ config:
   drush: ^13
   webroot: web
 services:
+  appserver:
+    build:
+      # SQLite3 PHP extension for testing
+      - apt-get update && apt-get install -y php8.3-sqlite3
   phpmyadmin:
     type: phpmyadmin
     hosts:
