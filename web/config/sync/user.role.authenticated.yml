@@ -21,5 +21,6 @@ permissions:
   - 'delete own files'
   - 'use text format basic_html'
   - 'view media'
+  - 'view own drupoll votes'
   - 'view vote count for any drupoll question'
   - 'view vote count for own drupoll question'
