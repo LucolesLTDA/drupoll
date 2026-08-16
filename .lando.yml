@@ -9,9 +9,11 @@ config:
   webroot: web
 services:
   appserver:
-    build:
+    build_as_root:
       # SQLite3 PHP extension for testing
-      - apt-get update && apt-get install -y php8.3-sqlite3
+      - add-apt-repository ppa:ondrej/php
+      - apt update
+      - apt install php8.3-sqlite3
   phpmyadmin:
     type: phpmyadmin
     hosts:
