@@ -1,12 +1,9 @@
-uuid: 21161e8f-4476-4593-9750-a25216a01b2b
 langcode: en
 status: true
 dependencies:
   config:
     - drupoll.answer_type.drupoll_answer
     - field.field.drupoll_answer.drupoll_answer.field_media
-_core:
-  default_config_hash: imJ-UZ2j20z9pKThTn6GiMNjh9AaQpgqA2pIFteWz5M
 id: drupoll_answer.drupoll_answer.default
 targetEntityType: drupoll_answer
 bundle: drupoll_answer

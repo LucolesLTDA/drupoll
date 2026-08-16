@@ -1,11 +1,8 @@
-uuid: 5b7e5fb5-3e8b-4fc5-b8af-ef9b6bb2dcaf
 langcode: en
 status: true
 dependencies:
   module:
     - drupoll
-_core:
-  default_config_hash: X0-RUm-OCWC442LN21JqpYJbwSdvNR5pqhx2U6ceruA
 id: drupoll_user_votes
 label: 'Drupoll user votes'
 module: views

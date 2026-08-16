@@ -1,4 +1,3 @@
-uuid: 7383ec85-3cb0-40eb-bf95-12d6911561ae
 langcode: en
 status: true
 dependencies:
@@ -6,8 +5,6 @@ dependencies:
     - drupoll
     - user
     - views_bulk_operations
-_core:
-  default_config_hash: bpPAom9HDNTt95hj6U3Au1lRPCHiB3kXLf3rfO8Sy_c
 id: drupoll_votes
 label: 'Drupoll votes'
 module: views

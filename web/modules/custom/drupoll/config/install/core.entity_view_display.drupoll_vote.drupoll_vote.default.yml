@@ -1,11 +1,8 @@
-uuid: 439a3808-ceed-4727-a889-32f6172a7920
 langcode: en
 status: true
 dependencies:
   module:
     - drupoll
-_core:
-  default_config_hash: vVt1qM7JvLEX8qMZLS-Zfv6HB462TL5ee0yxYdHucZE
 id: drupoll_vote.drupoll_vote.default
 targetEntityType: drupoll_vote
 bundle: drupoll_vote

@@ -1,12 +1,9 @@
-uuid: fc1e8ea5-d69f-47f4-9f66-a6d2e4026e5d
 langcode: en
 status: true
 dependencies:
   enforced:
     module:
       - drupoll
-_core:
-  default_config_hash: vwzADa8gbLrpUR5tbYD2UG_jfvF4yBjjPkW7jJDp3Ms
 id: drupoll_question
 label: 'Drupoll question'
 type: 'canonical_entities:drupoll_question'

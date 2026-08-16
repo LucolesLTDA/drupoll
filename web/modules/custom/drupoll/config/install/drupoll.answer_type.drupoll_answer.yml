@@ -1,9 +1,6 @@
-uuid: 4a08f828-6bbd-4cc6-83c8-acfa8ef4a4be
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: Qer0i74XC86nxzb8BfnFr-8Qc8K3nmVo9KYN_29Ek4k
 id: drupoll_answer
 label: Answer
 description: 'The default answer type.'
