@@ -1,24 +1,18 @@
+uuid: a21255c7-a989-4bc2-9e2d-c6476ae9541d
 langcode: en
 status: true
 dependencies:
   config:
     - drupoll.question_type.drupoll_question
   module:
-    - drupoll
     - inline_entity_form
+_core:
+  default_config_hash: HmUurDHL8SzjEHHuMMtMb_NxUmhp0B2_leDVDA-iv4s
 id: drupoll_question.drupoll_question.default
 targetEntityType: drupoll_question
 bundle: drupoll_question
 mode: default
 content:
-  title:
-    type: string_textfield
-    weight: 0
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   answers:
     type: inline_entity_form_complex
     weight: 1
@@ -40,8 +34,15 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
 hidden:
-  uid: true
   created: true
+  uid: true
   voting_status: true
-third_party_settings: {  }

@@ -1,15 +1,26 @@
+uuid: 8c612c1e-5cc2-42a9-97e4-3d7c610a0e97
 langcode: en
 status: true
 dependencies:
   config:
     - drupoll.answer_type.drupoll_answer
+    - field.field.drupoll_answer.drupoll_answer.field_media
   module:
-    - drupoll
+    - media_library
+_core:
+  default_config_hash: qpKpNffnSqlYQ45mtI0K153pOqI-J4eG1AU0c83kziw
 id: drupoll_answer.drupoll_answer.default
 targetEntityType: drupoll_answer
 bundle: drupoll_answer
 mode: default
 content:
+  field_media:
+    type: media_library_widget
+    weight: 1
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
   title:
     type: string_textfield
     weight: 0
@@ -19,6 +30,5 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
-  uid: true
   created: true
-third_party_settings: {  }
+  uid: true

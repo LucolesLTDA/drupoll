@@ -7,7 +7,7 @@ dependencies:
     - user
     - views_bulk_operations
 _core:
-  default_config_hash: la-LJCZvD7yi8MwPBqEs9Q1oCEFTh6uYPmFhCEUmxHU
+  default_config_hash: bpPAom9HDNTt95hj6U3Au1lRPCHiB3kXLf3rfO8Sy_c
 id: drupoll_votes
 label: 'Drupoll votes'
 module: views

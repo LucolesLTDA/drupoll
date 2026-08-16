@@ -1,9 +1,11 @@
+uuid: 5b7e5fb5-3e8b-4fc5-b8af-ef9b6bb2dcaf
 langcode: en
 status: true
 dependencies:
   module:
     - drupoll
-    - user
+_core:
+  default_config_hash: X0-RUm-OCWC442LN21JqpYJbwSdvNR5pqhx2U6ceruA
 id: drupoll_user_votes
 label: 'Drupoll user votes'
 module: views
@@ -19,25 +21,6 @@ display:
     position: 0
     display_options:
       title: 'My votes'
-      relationships:
-        quid:
-          id: quid
-          table: drupoll_votes
-          field: quid
-          entity_type: drupoll_vote
-          entity_field: quid
-          plugin_id: standard
-          label: Question
-          required: true
-        anid:
-          id: anid
-          table: drupoll_votes
-          field: anid
-          entity_type: drupoll_vote
-          entity_field: anid
-          plugin_id: standard
-          label: Answer
-          required: true
       fields:
         title:
           id: title
@@ -74,18 +57,38 @@ display:
       pager:
         type: mini
         options:
-          items_per_page: 25
           offset: 0
+          items_per_page: 25
       access:
         type: none
         options: {  }
       cache:
         type: tag
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
+      sorts:
+        created:
+          id: created
+          table: drupoll_votes
+          field: created
+          entity_type: drupoll_vote
+          entity_field: created
+          plugin_id: date
+          order: DESC
+      arguments:
+        uid:
+          id: uid
+          table: drupoll_votes
+          field: uid
+          entity_type: drupoll_vote
+          entity_field: uid
+          plugin_id: numeric
+          default_action: empty
+          exception:
+            title_enable: true
+          summary:
+            format: default_summary
+          specify_validation: true
+          validate:
+            type: 'entity:user'
       style:
         type: table
         options:
@@ -104,31 +107,39 @@ display:
           override: true
       row:
         type: fields
-      sorts:
-        created:
-          id: created
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: false
+      relationships:
+        quid:
+          id: quid
           table: drupoll_votes
-          field: created
+          field: quid
           entity_type: drupoll_vote
-          entity_field: created
-          plugin_id: date
-          order: DESC
-      arguments:
-        uid:
-          id: uid
+          entity_field: quid
+          plugin_id: standard
+          required: true
+          label: Question
+        anid:
+          id: anid
           table: drupoll_votes
-          field: uid
+          field: anid
           entity_type: drupoll_vote
-          entity_field: uid
-          plugin_id: numeric
-          default_action: 'empty'
-          exception:
-            title_enable: true
-          summary:
-            format: default_summary
-          specify_validation: true
-          validate:
-            type: 'entity:user'
+          entity_field: anid
+          plugin_id: standard
+          required: true
+          label: Answer
+      display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+      tags: {  }
   embed_1:
     id: embed_1
     display_title: Embed
@@ -136,3 +147,11 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+      tags: {  }

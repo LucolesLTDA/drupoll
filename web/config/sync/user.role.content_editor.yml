@@ -6,6 +6,7 @@ dependencies:
     - taxonomy.vocabulary.tags
   module:
     - contextual
+    - drupoll
     - file
     - navigation
     - node
@@ -31,5 +32,8 @@ permissions:
   - 'edit terms in tags'
   - 'revert all revisions'
   - 'view all revisions'
+  - 'view own drupoll votes'
   - 'view own unpublished content'
   - 'view the administration theme'
+  - 'view vote count for any drupoll question'
+  - 'view vote count for own drupoll question'

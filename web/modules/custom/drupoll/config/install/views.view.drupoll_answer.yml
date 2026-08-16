@@ -7,7 +7,7 @@ dependencies:
     - user
     - views_bulk_operations
 _core:
-  default_config_hash: xhiD8l2J1KtpZdlVpjflNktFCbETY2cdEEcuOyyFlMs
+  default_config_hash: CvA7ITTckPtxKLDYPO_33yN4_0rKTYuhg7MGe0vengs
 id: drupoll_answer
 label: 'Drupoll Answers'
 module: views
