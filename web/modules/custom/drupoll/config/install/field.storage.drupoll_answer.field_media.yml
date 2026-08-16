@@ -1,0 +1,20 @@
+uuid: 523b7e90-4952-4a54-99de-3249c9c3cbac
+langcode: en
+status: true
+dependencies:
+  module:
+    - drupoll
+    - media
+id: drupoll_answer.field_media
+field_name: field_media
+entity_type: drupoll_answer
+type: entity_reference
+settings:
+  target_type: media
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
