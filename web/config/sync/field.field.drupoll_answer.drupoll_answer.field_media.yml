@@ -5,6 +5,7 @@ dependencies:
   config:
     - drupoll.answer_type.drupoll_answer
     - field.storage.drupoll_answer.field_media
+    - media.type.image
 id: drupoll_answer.drupoll_answer.field_media
 field_name: field_media
 entity_type: drupoll_answer
