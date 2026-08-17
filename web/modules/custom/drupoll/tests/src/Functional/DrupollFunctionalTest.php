@@ -22,9 +22,6 @@ class DrupollFunctionalTest extends BrowserTestBase {
   protected static $modules = [
     'drupoll',
     'field_ui',
-    'file',
-    'image',
-    'media',
     'media_library',
   ];
 
