@@ -20,6 +20,7 @@ class DrupollFunctionalTest extends BrowserTestBase {
    * @var array
    */
   protected static $modules = [
+    'datetime',
     'drupoll',
     'field_ui',
     'media_library',
