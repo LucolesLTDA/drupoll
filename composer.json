@@ -16,6 +16,7 @@
     ],
     "require": {
         "composer/installers": "^2.3",
+        "cweagans/composer-patches": "^2.0",
         "drupal/core-composer-scaffold": "^11.4",
         "drupal/core-project-message": "^11.4",
         "drupal/core-recipe-unpack": "^11.4",
@@ -25,7 +26,7 @@
         "drupal/inline_entity_form": "^3.0",
         "drupal/kint": "^2.3",
         "drupal/pathauto": "^1.15",
-        "drupal/views_bulk_operations": "^4.4",
+        "drupal/views_bulk_operations": "4.4.x-dev@dev",
         "drush/drush": "^13.7"
     },
     "conflict": {
@@ -36,6 +37,7 @@
     "config": {
         "allow-plugins": {
             "composer/installers": true,
+            "cweagans/composer-patches": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "drupal/core-composer-scaffold": true,
             "drupal/core-project-message": true,
@@ -49,6 +51,13 @@
         "sort-packages": true
     },
     "extra": {
+        "enable-patching": true,
+        "composer-exit-on-patch-failure": true,
+        "patches": {
+            "drupal/views_bulk_operations": {
+                "missing return type declaration for getSubscribedEvents()": "https://www.drupal.org/files/issues/2026-08-17/3617756-adding-return-type.patch"
+            }
+        },
         "drupal-scaffold": {
             "locations": {
                 "web-root": "web/"

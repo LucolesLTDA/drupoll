@@ -351,7 +351,7 @@ function template_preprocess_form_element_radios__drupoll_answer_options(array &
   $view_builder = $entity_type_manager->getViewBuilder('drupoll_answer');
 
   // The foreach loop will now use the new 'child_keys' variable.
-  foreach ($variables['child_keys'] as $key) { // This loop will now correctly iterate over the keys.
+  foreach ($variables['child_keys'] as $key) {
     $option_element = $element[$key];
     $value = $option_element['#return_value'] ?? NULL;
     $original_title = $option_element['#title'] ?? '';
