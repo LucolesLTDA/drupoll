@@ -3,53 +3,53 @@
 namespace Drupal\drupoll\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
+use Drupal\Core\Entity\Attribute\ConfigEntityType;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Defines the Question type config entity.
- *
- * @ConfigEntityType(
- *   id = "drupoll_question_type",
- *   label = @Translation("Question type"),
- *   label_collection = @Translation("Question types"),
- *   label_singular = @Translation("question type"),
- *   label_plural = @Translation("question types"),
- *   label_count = @PluralTranslation(
- *     singular = "@count question type",
- *     plural = "@count question types",
- *   ),
- *   handlers = {
- *     "list_builder" = "Drupal\drupoll\DrupollQuestionTypeListBuilder",
- *     "form" = {
- *       "add" = "Drupal\drupoll\Form\DrupollQuestionTypeForm",
- *       "edit" = "Drupal\drupoll\Form\DrupollQuestionTypeForm",
- *       "delete" = "Drupal\drupoll\Form\DrupollQuestionTypeDeleteForm",
- *     },
- *     "route_provider" = {
- *       "html" = "Drupal\Core\Entity\Routing\AdminHtmlRouteProvider",
- *     },
- *   },
- *   config_prefix = "question_type",
- *   admin_permission = "administer drupoll question fields",
- *   bundle_of = "drupoll_question",
- *   entity_keys = {
- *     "id" = "id",
- *     "label" = "label",
- *   },
- *   config_export = {
- *     "id",
- *     "label",
- *     "description",
- *   },
- *   links = {
- *     "add-form" = "/admin/structure/drupoll-question-types/add",
- *     "edit-form" = "/admin/structure/drupoll-question-types/manage/{drupoll_question_type}",
- *     "delete-form" = "/admin/structure/drupoll-question-types/manage/{drupoll_question_type}/delete",
- *     "collection" = "/admin/structure/drupoll-question-types",
- *   },
- * )
  */
+#[ConfigEntityType(
+  id: "drupoll_question_type",
+  label: new TranslatableMarkup("Question type"),
+  label_collection: new TranslatableMarkup("Question types"),
+  label_singular: new TranslatableMarkup("question type"),
+  label_plural: new TranslatableMarkup("question types"),
+  label_count: [
+    "singular" => "@count question type",
+    "plural" => "@count question types",
+  ],
+  handlers: [
+    "list_builder" => "Drupal\drupoll\DrupollQuestionTypeListBuilder",
+    "form" => [
+      "add" => "Drupal\drupoll\Form\DrupollQuestionTypeForm",
+      "edit" => "Drupal\drupoll\Form\DrupollQuestionTypeForm",
+      "delete" => "Drupal\drupoll\Form\DrupollQuestionTypeDeleteForm",
+    ],
+    "route_provider" => [
+      "html" => "Drupal\Core\Entity\Routing\AdminHtmlRouteProvider",
+    ],
+  ],
+  config_prefix: "question_type",
+  admin_permission: "administer drupoll question fields",
+  bundle_of: "drupoll_question",
+  entity_keys: [
+    "id" => "id",
+    "label" => "label",
+  ],
+  config_export: [
+    "id",
+    "label",
+    "description",
+  ],
+  links: [
+    "add-form" => "/admin/structure/drupoll-question-types/add",
+    "edit-form" => "/admin/structure/drupoll-question-types/manage/{drupoll_question_type}",
+    "delete-form" => "/admin/structure/drupoll-question-types/manage/{drupoll_question_type}/delete",
+    "collection" => "/admin/structure/drupoll-question-types",
+  ],
+)]
 class DrupollQuestionType extends ConfigEntityBundleBase {
-
   /**
    * The machine name of this question type.
    *

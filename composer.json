@@ -26,6 +26,7 @@
         "drupal/inline_entity_form": "^3.0",
         "drupal/kint": "^2.3",
         "drupal/pathauto": "^1.15",
+        "drupal/token": "1.x-dev@dev",
         "drupal/views_bulk_operations": "4.4.x-dev@dev",
         "drush/drush": "^13.7"
     },
@@ -54,6 +55,9 @@
         "enable-patching": true,
         "composer-exit-on-patch-failure": true,
         "patches": {
+            "drupal/token": {
+                "Automated Drupal 12 compatibility fixes for token 1.x-dev": "https://www.drupal.org/files/issues/2026-06-19/token.1.x-dev.rector.patch"
+            },
             "drupal/views_bulk_operations": {
                 "missing return type declaration for getSubscribedEvents()": "https://www.drupal.org/files/issues/2026-08-17/3617756-adding-return-type.patch"
             }

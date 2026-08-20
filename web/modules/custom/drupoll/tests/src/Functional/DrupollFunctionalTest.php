@@ -3,11 +3,11 @@
 namespace Drupal\Tests\drupoll\Functional;
 
 use Drupal\Core\Url;
+use Drupal\Core\Config\ConfigInstallerInterface;
+use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Extension\Attribute\LegacyRequirementsHook;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\user\Entity\Role;
-use Drupal\Core\Config\FileStorage;
-use Drupal\Core\Config\ConfigInstallerInterface;
-use Behat\Mink\Exception\ElementNotFoundException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
@@ -164,6 +164,7 @@ class DrupollFunctionalTest extends BrowserTestBase {
   /**
    * Tests question creation with new and existing answers.
    */
+  #[LegacyRequirementsHook]
   public function testQuestionCreation(): void {
     // Log in as a user who can create questions.
     $this->drupalLogin($this->users['owner']);
