@@ -416,7 +416,6 @@ display:
               past_format: '@interval ago'
               granularity: 2
               refresh: 60
-              description: ''
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -509,7 +508,6 @@ display:
           sort_desc_label: Desc
       access:
         type: drupoll_own_or_any_vote_permission
-        options: {  }
       cache:
         type: tag
         options: {  }
