@@ -39,7 +39,7 @@ use Drupal\Core\StringTranslation\PluralTranslatableMarkup; // Add this use stat
     "route_provider" => [
       "html" => "Drupal\Core\Entity\Routing\AdminHtmlRouteProvider",
     ],
-    "views_data" => "Drupal\views\EntityViewsData",
+    "views_data" => 'Drupal\views\EntityViewsData',
   ],
   base_table: "drupoll_question",
   admin_permission: "administer drupoll question fields",

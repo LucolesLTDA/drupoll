@@ -34,7 +34,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
     "route_provider" => [
       "html" => "Drupal\Core\Entity\Routing\DefaultHtmlRouteProvider",
     ],
-    "views_data" => "Drupal\views\EntityViewsData",
+    "views_data" => 'Drupal\views\EntityViewsData',
   ],
   base_table: "drupoll_votes",
   admin_permission: "delete any drupoll vote",

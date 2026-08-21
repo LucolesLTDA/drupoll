@@ -38,7 +38,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
     "route_provider" => [
       "html" => "Drupal\Core\Entity\Routing\AdminHtmlRouteProvider",
     ],
-    "views_data" => "Drupal\views\EntityViewsData",
+    "views_data" => 'Drupal\views\EntityViewsData',
   ],
   base_table: "drupoll_answer",
   admin_permission: "administer drupoll answer fields",
