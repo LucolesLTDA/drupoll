@@ -82,7 +82,7 @@ display:
           show_select_all: default
           selected_actions:
             -
-              action_id: views_bulk_operations_delete_entity
+              action_id: drupoll_delete_answer_action
               preconfiguration:
                 add_confirmation: true
                 confirm_help_text: ''

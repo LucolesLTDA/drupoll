@@ -6,22 +6,23 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Action\ActionBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\drupoll\Entity\DrupollQuestionInterface;
+use Drupal\Core\Action\Attribute\Action;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Closes voting on a question.
- *
- * @Action(
- *   id = "drupoll_close_question_action",
- *   label = @Translation("Close voting"),
- *   type = "drupoll_question"
- * )
  */
+#[Action(
+  id: "drupoll_close_question_action",
+  label: new TranslatableMarkup("Close voting"),
+  type: "drupoll_question",
+)]
 class DrupollCloseQuestionAction extends ActionBase {
 
   /**
    * {@inheritdoc}
    */
-  public function execute($entity = NULL) {
+  public function execute($entity = NULL, object|null $object = NULL) {
     if ($entity instanceof DrupollQuestionInterface && $entity->isVotingOpen()) {
       $entity->setVotingOpen(FALSE)->save();
     }

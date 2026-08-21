@@ -5,6 +5,8 @@ namespace Drupal\drupoll\Plugin\Action;
 use Drupal\Core\Action\ActionBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\drupoll\Entity\DrupollQuestionInterface;
+use Drupal\Core\Action\Attribute\Action;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Deletes a question.
@@ -14,20 +16,18 @@ use Drupal\drupoll\Entity\DrupollQuestionInterface;
  * intact for reuse. This action defers entirely to the question entity's
  * own access control handler, rather than duplicating its own/any
  * permission logic here.
- *
- * @Action(
- *   id = "drupoll_delete_question_action",
- *   label = @Translation("Delete question"),
- *   type = "drupoll_question",
- *   confirm = TRUE
- * )
  */
+#[Action(
+  id: "drupoll_delete_question_action",
+  label: new TranslatableMarkup("Delete question"),
+  type: "drupoll_question",
+)]
 class DrupollDeleteQuestionAction extends ActionBase {
 
   /**
    * {@inheritdoc}
    */
-  public function execute($entity = NULL) {
+  public function execute($entity = NULL, object|null $object = NULL) {
     if ($entity instanceof DrupollQuestionInterface) {
       $entity->delete();
     }

@@ -6,22 +6,23 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Action\ActionBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\drupoll\Entity\DrupollQuestionInterface;
+use Drupal\Core\Action\Attribute\Action;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Opens (reopens) voting on a question.
- *
- * @Action(
- *   id = "drupoll_open_question_action",
- *   label = @Translation("Open voting"),
- *   type = "drupoll_question"
- * )
  */
+#[Action(
+  id: "drupoll_open_question_action",
+  label: new TranslatableMarkup("Open voting"),
+  type: "drupoll_question",
+)]
 class DrupollOpenQuestionAction extends ActionBase {
 
   /**
    * {@inheritdoc}
    */
-  public function execute($entity = NULL) {
+  public function execute($entity = NULL, object|null $object = NULL) {
     if ($entity instanceof DrupollQuestionInterface && !$entity->isVotingOpen()) {
       $entity->setVotingOpen(TRUE)->save();
     }

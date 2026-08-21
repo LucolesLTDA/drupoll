@@ -5,6 +5,8 @@ namespace Drupal\drupoll\Plugin\Action;
 use Drupal\Core\Action\ActionBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\drupoll\Entity\DrupollVoteInterface;
+use Drupal\Core\Action\Attribute\Action;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Deletes a vote.
@@ -13,20 +15,18 @@ use Drupal\drupoll\Entity\DrupollVoteInterface;
  * voter (a natural consequence of DrupollVoteAccess re-evaluating on the
  * next request, not an explicit action taken here). This action defers
  * entirely to the vote entity's own access control handler.
- *
- * @Action(
- *   id = "drupoll_delete_vote_action",
- *   label = @Translation("Delete vote"),
- *   type = "drupoll_vote",
- *   confirm = TRUE
- * )
  */
+#[Action(
+  id: "drupoll_delete_vote_action",
+  label: new TranslatableMarkup("Delete votes"),
+  type: "drupoll_vote",
+)]
 class DrupollDeleteVoteAction extends ActionBase {
 
   /**
    * {@inheritdoc}
    */
-  public function execute($entity = NULL) {
+  public function execute($entity = NULL, object|null $object = NULL) {
     if ($entity instanceof DrupollVoteInterface) {
       $entity->delete();
     }
